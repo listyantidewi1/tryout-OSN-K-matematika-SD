@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip install:*)",
+      "Bash(powershell -Command \"Get-Content ''C:\\\\Users\\\\ASUS\\\\.claude\\\\projects\\\\D--Projects-tryout-osn\\\\9a4e959b-ba69-4008-a04f-37795a007f26.jsonl'' | Select-Object -Last 20\")",
+      "Bash(powershell -Command \"Get-Content ''C:\\\\Users\\\\ASUS\\\\.claude\\\\projects\\\\D--Projects-tryout-osn\\\\9a4e959b-ba69-4008-a04f-37795a007f26.jsonl'' | Select-Object -Last 5 | ForEach-Object { \\($_| ConvertFrom-Json\\).message.content | ForEach-Object { if \\($_type -eq ''text''\\) { $_text.Substring\\(0, [Math]::Min\\(500, $_text.Length\\)\\) } } }\")",
+      "Bash(powershell -Command \"$lines = Get-Content ''C:\\\\Users\\\\ASUS\\\\.claude\\\\projects\\\\D--Projects-tryout-osn\\\\9a4e959b-ba69-4008-a04f-37795a007f26.jsonl''; foreach\\($line in \\($lines | Select-Object -Last 8\\)\\) { $obj = $line | ConvertFrom-Json; $role = $obj.message.role; if\\($role -eq ''human''\\) { foreach\\($c in $obj.message.content\\) { if\\($c.type -eq ''text''\\) { Write-Output \\(''USER: '' + $c.text.Substring\\(0, [Math]::Min\\(300, $c.text.Length\\)\\)\\) } } } }\")",
+      "Bash(python3 -c \":*)",
+      "Bash(python -c \":*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(where npx:*)"
+    ]
+  }
+}

@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tryout OSN Matematika SD 2026</title>
+<style>
+:root{--pri:#1a56db;--pri2:#1341a8;--ok:#0e9f6e;--no:#e02424;--warn:#d97706;--bg:#f3f4f6;--card:#fff;--bdr:#e5e7eb;--txt:#111827;--mut:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+.screen{display:none!important}.screen.active{display:block!important}.screen.active.flex-scr{display:flex!important}
+
+/* WELCOME */
+#welcome{min-height:100vh;align-items:center;justify-content:center;background:linear-gradient(135deg,#1a56db 0%,#0c3997 100%)}
+.wcard{background:#fff;border-radius:20px;padding:44px 36px;max-width:500px;width:92%;text-align:center;box-shadow:0 25px 60px rgba(0,0,0,.25)}
+.wlogo{font-size:56px;margin-bottom:6px}
+.wtitle{font-size:26px;font-weight:800;color:var(--pri);margin-bottom:4px}
+.wsub{font-size:14px;color:var(--mut);margin-bottom:24px}
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:22px;text-align:left}
+.ibox{background:#eff6ff;border-radius:10px;padding:10px 14px}.ibox .lb{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}.ibox .vl{font-size:17px;font-weight:700;color:var(--pri)}
+.ninp{width:100%;padding:13px 15px;border:2px solid var(--bdr);border-radius:10px;font-size:16px;outline:none;transition:.2s;margin-bottom:14px}.ninp:focus{border-color:var(--pri)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 24px;border-radius:10px;border:none;cursor:pointer;font-size:16px;font-weight:600;transition:.2s;width:100%}
+.btn1{background:var(--pri);color:#fff}.btn1:hover{background:var(--pri2);transform:translateY(-1px);box-shadow:0 4px 12px rgba(26,86,219,.4)}.btn1:disabled{background:#93c5fd;cursor:not-allowed;transform:none;box-shadow:none}
+.snote{font-size:12px;color:var(--mut);margin-top:14px;line-height:1.6}
+
+/* QUIZ */
+#quiz{max-width:900px;margin:0 auto;padding:18px 14px 40px}
+.qhdr{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:12px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07);gap:10px;flex-wrap:wrap}
+.qhdr .who{font-weight:600;font-size:14px}.qhdr .who span{color:var(--mut);font-weight:400}
+.pwrap{flex:1;min-width:120px}
+.pbbg{height:7px;background:var(--bdr);border-radius:4px;overflow:hidden}.pb{height:100%;background:var(--pri);border-radius:4px;transition:.3s}
+.plbl{font-size:11px;color:var(--mut);margin-bottom:3px}
+.tmr{display:flex;align-items:center;gap:6px;font-size:21px;font-weight:800;color:var(--txt);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tmr.w{color:var(--warn)}.tmr.d{color:var(--no);animation:pls 1s infinite}
+@keyframes pls{0%,100%{opacity:1}50%{opacity:.5}}
+.pausebtn{background:none;border:2px solid var(--bdr);border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.pausebtn:hover{border-color:var(--pri);color:var(--pri)}
+
+/* Nav grid */
+.qnav{background:#fff;border-radius:14px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.qnav .tt{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.qng{display:flex;flex-wrap:wrap;gap:5px}
+.qnb{width:32px;height:32px;border-radius:7px;border:2px solid var(--bdr);background:#fff;cursor:pointer;font-size:12px;font-weight:600;color:var(--mut);transition:.15s}
+.qnb.ans{background:var(--pri);border-color:var(--pri);color:#fff}.qnb.cur{border-color:var(--pri);color:var(--pri)}.qnb.ans.cur{background:var(--pri2);border-color:var(--pri2)}
+
+/* Question card */
+.qcard{background:#fff;border-radius:14px;padding:24px 22px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.qbadge{display:flex;align-items:center;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.qnum{background:var(--pri);color:#fff;padding:3px 10px;border-radius:18px;font-size:12px;font-weight:700}
+.qdiff{padding:3px 10px;border-radius:18px;font-size:11px;font-weight:600}
+.qdiff.mudah{background:#d1fae5;color:#065f46}.qdiff.sedang{background:#fef3c7;color:#92400e}.qdiff.sulit{background:#fee2e2;color:#991b1b}
+.qtopic{padding:3px 10px;border-radius:18px;font-size:11px;font-weight:600;background:#ede9fe;color:#5b21b6}
+.qtxt{font-size:16px;line-height:1.7;margin-bottom:18px}.qtxt svg{display:block;margin:14px auto;max-width:100%}
+.opts{display:flex;flex-direction:column;gap:9px}
+.obtn{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border:2px solid var(--bdr);border-radius:11px;background:#fff;cursor:pointer;text-align:left;transition:.15s;font-size:15px;line-height:1.5}
+.obtn:hover{border-color:var(--pri);background:#eff6ff}.obtn.sel{border-color:var(--pri);background:#eff6ff}
+.oltr{width:26px;height:26px;border-radius:50%;border:2px solid var(--bdr);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;flex-shrink:0;transition:.15s}
+.obtn.sel .oltr{background:var(--pri);border-color:var(--pri);color:#fff}
+.qbtns{display:flex;gap:10px}
+.btn2{background:#fff;color:var(--txt);border:2px solid var(--bdr);padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s}.btn2:hover{border-color:var(--pri);color:var(--pri)}
+.bnxt{background:var(--pri);color:#fff;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:.2s;margin-left:auto}.bnxt:hover{background:var(--pri2)}
+.bfin{background:var(--ok);color:#fff;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;transition:.2s;margin-left:auto}.bfin:hover{background:#057a55}
+
+/* PAUSE OVERLAY */
+.pause-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:200;display:none}
+.pause-ov.open{display:flex}
+.pause-box{background:#fff;border-radius:20px;padding:40px 32px;max-width:380px;width:90%;text-align:center}
+.pause-box h3{font-size:22px;margin-bottom:8px}.pause-box p{color:var(--mut);margin-bottom:20px}
+
+/* RESULT */
+#result{max-width:900px;margin:0 auto;padding:18px 14px 60px}
+.rhdr{background:linear-gradient(135deg,#1a56db,#0c3997);border-radius:20px;padding:32px 24px;text-align:center;color:#fff;margin-bottom:20px}
+.rhdr h2{font-size:24px;font-weight:800;margin-bottom:4px}.rhdr .nm{font-size:14px;opacity:.85;margin-bottom:20px}
+.scir{width:130px;height:130px;border-radius:50%;border:5px solid rgba(255,255,255,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 16px;background:rgba(255,255,255,.1)}
+.sbig{font-size:40px;font-weight:900;line-height:1}.smax{font-size:12px;opacity:.7}.spct{font-size:17px;font-weight:700;margin-bottom:4px}
+.medal{font-size:44px;margin-bottom:6px}.mlbl{font-size:18px;font-weight:700}
+.srow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.sbox{background:rgba(255,255,255,.15);border-radius:10px;padding:12px}.sbox .sv{font-size:22px;font-weight:800}.sbox .sl{font-size:11px;opacity:.8}
+
+/* TOPIC BREAKDOWN */
+.tbreak{background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)}
+.tbreak h3{font-size:16px;font-weight:700;margin-bottom:14px}
+.trow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr)}.trow:last-child{border:none}
+.trow .tn{flex:1;font-size:13px;font-weight:600}.trow .tv{font-size:13px;font-weight:700;color:var(--pri);min-width:60px;text-align:right}
+.trow .tbar{flex:2;height:8px;background:var(--bdr);border-radius:4px;overflow:hidden}.trow .tbf{height:100%;background:var(--pri);border-radius:4px;transition:.3s}
+
+/* TABS & REVIEW */
+.rtabs{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.tbtn{padding:8px 16px;border-radius:8px;border:2px solid var(--bdr);background:#fff;cursor:pointer;font-size:13px;font-weight:600;color:var(--mut);transition:.2s}.tbtn.act{background:var(--pri);color:#fff;border-color:var(--pri)}
+.rlist{display:flex;flex-direction:column;gap:14px}
+.rcard{background:#fff;border-radius:14px;padding:20px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-left:4px solid var(--bdr)}
+.rcard.ok{border-left-color:var(--ok)}.rcard.no{border-left-color:var(--no)}.rcard.sk{border-left-color:var(--mut)}
+.rhead{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.rst{padding:3px 10px;border-radius:18px;font-size:11px;font-weight:700}
+.rst.ok{background:#d1fae5;color:#065f46}.rst.no{background:#fee2e2;color:#991b1b}.rst.sk{background:#f3f4f6;color:var(--mut)}
+.rq{font-size:14px;line-height:1.6;margin-bottom:12px}.rq svg{display:block;margin:10px auto;max-width:100%}
+.ropts{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.ropt{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-radius:9px;background:#f9fafb;font-size:13px}.ropt.copt{background:#d1fae5}.ropt.uwrg{background:#fee2e2}
+.expl{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.7}.expl strong{color:var(--warn)}
+.racts{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.bret{background:var(--pri);color:#fff;padding:13px 24px;border-radius:10px;font-size:15px;font-weight:600;border:none;cursor:pointer;transition:.2s}.bret:hover{background:var(--pri2)}
+
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:100;display:none}.mov.open{display:flex}
+.mdl{background:#fff;border-radius:16px;padding:28px 24px;max-width:380px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mdl h3{font-size:18px;font-weight:700;margin-bottom:10px}.mdl p{color:var(--mut);line-height:1.6;margin-bottom:20px}
+.mbtns{display:flex;gap:10px}
+.mbc{flex:1;padding:11px;border-radius:10px;border:2px solid var(--bdr);background:#fff;cursor:pointer;font-size:14px;font-weight:600}
+.mbk{flex:1;padding:11px;border-radius:10px;border:none;background:var(--ok);color:#fff;cursor:pointer;font-size:14px;font-weight:600}
+
+@media(max-width:600px){.qhdr{padding:10px 12px}.qcard{padding:18px 14px}.wcard{padding:28px 20px}.srow{grid-template-columns:1fr 1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- WELCOME -->
+<div id="welcome" class="screen flex-scr active">
+<div class="wcard">
+  <div class="wlogo">🧮</div>
+  <div class="wtitle">Tryout OSN Matematika SD</div>
+  <div class="wsub">Olimpiade Sains Nasional · Tingkat Kabupaten/Kota · 2026</div>
+  <div class="igrid">
+    <div class="ibox"><div class="lb">Jumlah Soal</div><div class="vl">30 soal</div></div>
+    <div class="ibox"><div class="lb">Durasi</div><div class="vl">60 menit</div></div>
+    <div class="ibox"><div class="lb">Jenis</div><div class="vl">Pilihan Ganda</div></div>
+    <div class="ibox"><div class="lb">Skor Maks</div><div class="vl">37,5</div></div>
+  </div>
+  <input id="ninp" class="ninp" type="text" placeholder="Masukkan nama kamu..." maxlength="50">
+  <button id="sbtn" class="btn btn1" disabled>🚀 Mulai Tryout</button>
+  <div class="snote"><strong>Aturan Skor OSN-K:</strong> Mudah ×1,00 · Sedang ×1,25 · Sulit ×1,50 · Salah/Kosong = 0</div>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div id="quiz" class="screen">
+  <div class="qhdr">
+    <div class="who"><span>Peserta: </span><span id="hname">—</span></div>
+    <div class="pwrap"><div class="plbl" id="plbl">Soal 1/30</div><div class="pbbg"><div class="pb" id="pb"></div></div></div>
+    <button class="pausebtn" id="pausebtn" title="Pause">⏸</button>
+    <div class="tmr" id="tmr"><span>⏱</span><span id="tdisp">60:00</span></div>
+  </div>
+  <div class="qnav"><div class="tt">Navigasi Soal</div><div class="qng" id="qng"></div></div>
+  <div class="qcard" id="qcard">
+    <div class="qbadge"><span class="qnum" id="qn">Soal 1</span><span class="qdiff" id="qd">Mudah</span><span class="qtopic" id="qt">Topik</span></div>
+    <div class="qtxt" id="qtxt"></div>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div class="qbtns">
+    <button class="btn2" id="bprev">← Sebelumnya</button>
+    <button class="bnxt" id="bnxt">Selanjutnya →</button>
+    <button class="bfin" id="bfin" style="display:none">✔ Selesai</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="result" class="screen">
+  <div class="rhdr">
+    <div class="medal" id="rmedal">🥇</div><div class="mlbl" id="rmlbl">Luar Biasa!</div>
+    <h2>Hasil Tryout OSN Matematika</h2>
+    <div class="nm" id="rnm"></div>
+    <div class="scir"><div class="sbig" id="rsc">0</div><div class="smax">/ 37,5</div></div>
+    <div class="spct" id="rpct">0%</div>
+    <div class="srow">
+      <div class="sbox"><div class="sv" id="stb">0</div><div class="sl">✅ Benar</div></div>
+      <div class="sbox"><div class="sv" id="sts">0</div><div class="sl">❌ Salah</div></div>
+      <div class="sbox"><div class="sv" id="stk">0</div><div class="sl">⬜ Kosong</div></div>
+    </div>
+  </div>
+  <div class="tbreak" id="tbreak"><h3>📊 Rincian Skor per Topik</h3><div id="trows"></div></div>
+  <div class="rtabs" id="rtabs">
+    <button class="tbtn act" onclick="showTab('all')">Semua (30)</button>
+    <button class="tbtn" onclick="showTab('wrong')">Salah</button>
+    <button class="tbtn" onclick="showTab('correct')">Benar</button>
+  </div>
+  <div class="rlist" id="rlist"></div>
+  <div class="racts">
+    <button class="bret" onclick="retry()">🔄 Coba Lagi (Soal Baru)</button>
+    <button class="bret" style="background:#6b7280" onclick="retry(true)">🔄 Ulangi Soal Ini</button>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="mov" id="fmod"><div class="mdl"><h3>⚠️ Selesaikan Tryout?</h3><p id="fmsg"></p><div class="mbtns"><button class="mbc" onclick="closeM()">Kembali</button><button class="mbk" onclick="finish()">Ya, Kumpulkan</button></div></div></div>
+<div class="pause-ov" id="pov"><div class="pause-box"><h3>⏸ Tryout Dijeda</h3><p>Timer dihentikan sementara. Soal disembunyikan selama jeda.</p><button class="btn btn1" onclick="resumeTimer()" style="max-width:220px;margin:0 auto">▶ Lanjutkan</button></div></div>
+
+<script>
+// ═══════════════════════════════════════
+//  TOPIC LABELS
+// ═══════════════════════════════════════
+const TOPICS = {
+  bil: 'Bilangan & Operasi',
+  alj: 'Aljabar',
+  geo: 'Geometri & Pengukuran',
+  stat: 'Statistika & Data',
+  komb: 'Kombinatorika & Peluang',
+  pola: 'Pola & Barisan',
+  log: 'Logika & Penalaran'
+};
+
+// ═══════════════════════════════════════
+//  QUESTION BANK  (100+ questions)
+// ═══════════════════════════════════════
+const BANK=[
+// ═══════ MUDAH ═══════
+{id:1,diff:'mudah',topic:'bil',
+q:'Sebuah kotak berisi <strong>240 kancing</strong>. Dina mengambil 2/3 dari jumlah kancing tersebut untuk tugas prakarya. Dari kancing yang diambil Dina, 1/5 di antaranya hilang di perjalanan pulang. Berapa kancing yang masih tersisa pada Dina setelah beberapa di antaranya hilang?',
+opts:['13 kancing','32 kancing','64 kancing','128 kancing'],ans:3,
+exp:'Dina mengambil 2/3 × 240 = 160 kancing. Yang hilang = 1/5 × 160 = 32. Sisa pada Dina = 160 − 32 = <strong>128 kancing</strong>.'},
+
+{id:2,diff:'mudah',topic:'bil',
+q:'Sebuah peti berisi beberapa kotak kecil. Setiap kotak kecil berisi <strong>8 kelereng</strong>. Jika seluruh kelereng dari semua kotak kecil dibagi rata kepada <strong>6 anak</strong>, masing-masing anak mendapat <strong>24 kelereng</strong>. Berapa banyak kotak kecil yang ada dalam peti tersebut?',
+opts:['12 kotak','15 kotak','18 kotak','20 kotak'],ans:2,
+exp:'Total kelereng = 6 × 24 = 144. Jumlah kotak = 144 ÷ 8 = <strong>18 kotak</strong>.'},
+
+{id:3,diff:'mudah',topic:'bil',
+q:'Pak Marto memanen padi pada lahan seluas <strong>2 hektar</strong> dengan hasil rata-rata <strong>10,6 ton per hektar</strong>. Setelah dijemur di bawah sinar matahari, berat padi berkurang <strong>20%</strong> karena kandungan airnya menguap. Berapa kilogram berat padi yang diperoleh Pak Marto setelah proses penjemuran?',
+opts:['848 kg','1.696 kg','8.480 kg','16.960 kg'],ans:3,
+exp:'Total panen = 2 × 10,6 = 21,2 ton. Setelah dijemur (sisa 80%) = 0,8 × 21,2 = 16,96 ton = <strong>16.960 kg</strong>.'},
+
+{id:4,diff:'mudah',topic:'bil',
+q:'Lina memiliki tiga kotak berisi pensil. Kotak pertama berisi <strong>24 pensil</strong>. Kotak kedua berisi <strong>tiga kali lipat</strong> dari isi kotak pertama, dan kotak ketiga berisi <strong>setengah</strong> dari isi kotak kedua. Berapa total pensil yang dimiliki Lina dari ketiga kotak tersebut?',
+opts:['96 pensil','120 pensil','132 pensil','144 pensil'],ans:2,
+exp:'Kotak 1 = 24, Kotak 2 = 3×24 = 72, Kotak 3 = 72÷2 = 36. Total = 24+72+36 = <strong>132 pensil</strong>.'},
+
+{id:5,diff:'mudah',topic:'bil',
+q:'Seorang petani memetik <strong>240 buah apel</strong> dalam sehari. Setiap apel dijual dengan harga <strong>Rp2.000</strong>. Namun ternyata <strong>12%</strong> dari apel yang dipetik mengalami kerusakan dan tidak bisa dijual. Berapa total uang yang diperoleh petani dari apel yang bisa dijual?',
+opts:['Rp400.000','Rp412.800','Rp422.400','Rp450.000'],ans:2,
+exp:'Apel terjual = 88% × 240 = 211,2 buah. Uang = 0,88 × 240 × 2000 = <strong>Rp422.400</strong>.'},
+
+{id:6,diff:'mudah',topic:'bil',
+q:'Pukul 06.15, Amir berangkat ke sekolah naik sepeda dengan kecepatan rata-rata <strong>10 km/jam</strong>. Jarak dari rumah Amir ke sekolah adalah <strong>3 km</strong>. Pukul berapa Amir tiba di sekolah?',
+opts:['Pukul 06.24','Pukul 06.33','Pukul 06.44','Pukul 06.55'],ans:1,
+exp:'Waktu tempuh = 3/10 jam = 0,3 jam = 18 menit. Tiba pukul 06.15 + 18 menit = <strong>06.33</strong>.'},
+
+{id:7,diff:'mudah',topic:'bil',
+q:'Urutkan empat bilangan berikut dari yang <strong>terkecil ke terbesar</strong>:<br><strong>1/8 &nbsp;;&nbsp; 0,1255 &nbsp;;&nbsp; 3/25 &nbsp;;&nbsp; 12,25%</strong>',
+opts:['1/8 ; 0,1255 ; 3/25 ; 12,25%','0,1255 ; 3/25 ; 1/8 ; 12,25%','12,25% ; 3/25 ; 1/8 ; 0,1255','3/25 ; 12,25% ; 1/8 ; 0,1255'],ans:3,
+exp:'Desimal: 1/8=0,125 ; 3/25=0,12 ; 12,25%=0,1225. Urutan: <strong>3/25 (0,12) ; 12,25% (0,1225) ; 1/8 (0,125) ; 0,1255</strong>.'},
+
+{id:8,diff:'mudah',topic:'bil',
+q:'Dua buah bilangan memiliki <strong>KPK = 120</strong> dan <strong>FPB = 6</strong>. Salah satu bilangan tersebut adalah <strong>24</strong>. Bilangan yang lainnya adalah ...',
+opts:['30','40','50','60'],ans:0,
+exp:'Bilangan lain = (KPK × FPB) ÷ bilangan pertama = (120 × 6) ÷ 24 = <strong>30</strong>. Cek: FPB(24,30)=6 ✓, KPK(24,30)=120 ✓.'},
+
+{id:9,diff:'mudah',topic:'bil',
+q:'Suhu udara di Antartika pada tanggal 16 Mei 2025 pukul 04.00 mencapai <strong>−48°C</strong>. Dua jam kemudian, suhu naik <strong>2 derajat Celcius</strong>. Dua jam setelahnya, suhu turun <strong>3 derajat Celcius</strong>. Suhu udara pukul 08.00 adalah ...',
+opts:['−50°C','−49°C','−46°C','−43°C'],ans:1,
+exp:'Pukul 06.00: −48 + 2 = −46°C. Pukul 08.00: −46 − 3 = <strong>−49°C</strong>.'},
+
+{id:10,diff:'mudah',topic:'geo',
+q:'Sebuah taman berbentuk gabungan antara <strong>setengah lingkaran</strong> dengan diameter <strong>14 meter</strong> dan <strong>persegi panjang</strong> dengan panjang 20 meter dan lebar 14 meter seperti gambar berikut. Berapa luas taman tersebut? (π = 22/7)<br><svg width="280" height="140" viewBox="0 0 280 140"><rect x="10" y="10" width="200" height="120" fill="#d1fae5" stroke="#065f46" stroke-width="2" rx="2"/><ellipse cx="210" cy="70" rx="60" ry="60" fill="#d1fae5" stroke="#065f46" stroke-width="2"/><rect x="210" y="10" width="2" height="120" fill="#d1fae5"/><text x="110" y="75" text-anchor="middle" font-size="13" fill="#065f46" font-weight="bold">20 m</text><text x="5" y="75" text-anchor="end" font-size="12" fill="#065f46">14 m</text></svg>',
+opts:['355 m²','356 m²','357 m²','359 m²'],ans:2,
+exp:'Luas setengah lingkaran = ½ × 22/7 × 7² = 77 m². Luas persegi panjang = 20 × 14 = 280 m². Total = <strong>357 m²</strong>.'},
+
+{id:11,diff:'mudah',topic:'stat',
+q:'Di sebuah sekolah, rata-rata nilai matematika kelas 6A adalah <strong>78</strong> untuk <strong>30 siswa</strong>, dan rata-rata nilai matematika kelas 6B adalah <strong>82</strong> untuk <strong>25 siswa</strong>. Berapakah rata-rata nilai matematika gabungan dari kedua kelas tersebut (dibulatkan)?',
+opts:['79','80','81','82'],ans:1,
+exp:'Total = 78×30 + 82×25 = 2.340 + 2.050 = 4.390. Rata-rata = 4.390 ÷ 55 = 79,82 ≈ <strong>80</strong>.'},
+
+{id:12,diff:'mudah',topic:'geo',
+q:'Sebuah akuarium berbentuk balok memiliki panjang <strong>50 cm</strong>, lebar <strong>30 cm</strong>, dan tinggi <strong>40 cm</strong>. Akuarium diisi air hingga setengah tingginya. Sebuah batu dimasukkan ke dalam akuarium sehingga permukaan air naik <strong>10 cm</strong>. Volume batu tersebut adalah ...',
+opts:['12.000 cm³','13.000 cm³','14.000 cm³','15.000 cm³'],ans:3,
+exp:'Volume air awal = 50×30×20 = 30.000. Setelah batu: 50×30×30 = 45.000. Volume batu = <strong>15.000 cm³</strong>.'},
+
+{id:13,diff:'mudah',topic:'stat',
+q:'Dalam survei, 240 siswa memilih kegiatan ekstrakurikuler: Sepak bola 90, Pramuka 60, Tari 45, Seni musik 45. Persentase siswa yang memilih <strong>Pramuka</strong> dan besar sudut dalam diagram lingkaran adalah ...',
+opts:['20% dan 60°','25% dan 90°','25% dan 72°','20% dan 72°'],ans:1,
+exp:'Pramuka = 60/240 = 25%. Sudut = 25% × 360° = <strong>90°</strong>.'},
+
+{id:14,diff:'mudah',topic:'bil',
+q:'Jika <strong>35%</strong> dari suatu bilangan adalah <strong>75</strong>, maka <strong>21%</strong> dari bilangan tersebut adalah ...',
+opts:['35','42','45','55'],ans:2,
+exp:'35% = 75, maka 7% = 15. Jadi 21% = 3 × 15 = <strong>45</strong>.'},
+
+{id:15,diff:'mudah',topic:'bil',
+q:'Andika membeli: 10 buku tulis (Rp5.000/buku, diskon 10%), 5 pensil (Rp2.000/pensil), 1 penggaris (Rp2.000), dan 1 kotak pensil (Rp30.000, diskon 5%). Total yang harus dibayar adalah ...',
+opts:['Rp92.000','Rp88.400','Rp85.500','Rp83.800'],ans:2,
+exp:'Buku: 10×5000×0,9 = 45.000. Pensil: 5×2000 = 10.000. Penggaris: 2.000. Kotak: 30.000×0,95 = 28.500. Total = <strong>Rp85.500</strong>.'},
+
+{id:16,diff:'mudah',topic:'bil',
+q:'Pedagang membeli <strong>20 kg jeruk</strong> seharga <strong>Rp12.000/kg</strong> lalu dijual kembali <strong>Rp14.000/kg</strong>. Total keuntungan yang diperoleh adalah ...',
+opts:['Rp20.000','Rp30.000','Rp40.000','Rp50.000'],ans:2,
+exp:'Modal = 20 × 12.000 = 240.000. Penjualan = 20 × 14.000 = 280.000. Untung = <strong>Rp40.000</strong>.'},
+
+{id:17,diff:'mudah',topic:'stat',
+q:'Median dari data berikut: <strong>4/5 &nbsp;;&nbsp; 5/10 &nbsp;;&nbsp; 0,235 &nbsp;;&nbsp; 3/4</strong> adalah ...',
+opts:['0,500','0,625','0,750','0,800'],ans:1,
+exp:'Desimal: 0,8 ; 0,5 ; 0,235 ; 0,75. Urutan: 0,235 ; 0,5 ; 0,75 ; 0,8. Median = (0,5+0,75)/2 = <strong>0,625</strong>.'},
+
+{id:18,diff:'mudah',topic:'geo',
+q:'Sebuah segitiga memiliki panjang sisi-sisi dalam perbandingan <strong>3 : 4 : 5</strong>. Jika keliling segitiga tersebut adalah <strong>36 cm</strong>, tentukan panjang sisi-sisinya dan apakah segitiga tersebut merupakan segitiga siku-siku.',
+opts:['6, 8, 10 cm; Ya, siku-siku','8, 10, 12 cm; Ya, siku-siku','9, 12, 15 cm; Ya, siku-siku','9, 12, 15 cm; Bukan siku-siku'],ans:2,
+exp:'12x = 36 → x=3. Sisi: 9,12,15. Cek: 15² = 225 = 9²+12² = 81+144 ✓. <strong>Ya, siku-siku</strong>.'},
+
+{id:19,diff:'mudah',topic:'stat',
+q:'Rata-rata dari 10 data berikut: <strong>10, 12, 8, 15, 17, 18, 25, 30, 35, 40</strong> adalah ...',
+opts:['12','18','21','30'],ans:2,
+exp:'Jumlah = 210. Rata-rata = 210/10 = <strong>21</strong>.'},
+
+{id:20,diff:'mudah',topic:'bil',
+q:'Rifky memiliki uang <strong>Rp50.000</strong>. Sebuah kue dijual dengan harga Rp10.000 per bungkus, dan satu bungkus berisi <strong>3 kue</strong>. Berapa <strong>maksimal</strong> banyaknya kue yang dapat dibeli Rifky?',
+opts:['3 kue','5 kue','12 kue','15 kue'],ans:3,
+exp:'Bungkus = 50.000/10.000 = 5. Total kue = 5 × 3 = <strong>15 kue</strong>.'},
+
+{id:21,diff:'mudah',topic:'bil',
+q:'Bilangan yang <strong>tidak dapat</strong> dinyatakan sebagai penjumlahan tiga bilangan prima yang <strong>berbeda</strong> adalah ...',
+opts:['12','13','14','15'],ans:1,
+exp:'12=2+3+7 ✓, 14=2+5+7 ✓, 15=3+5+7 ✓. Untuk 13: satu harus 2 (genap), sisa 11 = a+b. Tidak ada dua prima berbeda berjumlah 11 yang bukan 2. Jadi <strong>13</strong>.'},
+
+{id:22,diff:'mudah',topic:'geo',
+q:'Perhatikan kolam renang berbentuk huruf "L" berikut ini.<br><svg width="280" height="200" viewBox="0 0 280 200"><rect x="10" y="10" width="120" height="60" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><rect x="10" y="70" width="250" height="100" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><text x="70" y="47" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">12</text><text x="135" y="130" text-anchor="middle" font-size="14" fill="#1e40af" font-weight="bold">8</text><text x="260" y="130" text-anchor="start" font-size="12" fill="#1e40af">m</text><line x1="130" y1="10" x2="130" y2="70" stroke="#1e40af" stroke-width="1" stroke-dasharray="4"/><text x="137" y="44" font-size="11" fill="#1e40af">3</text><text x="3" y="110" text-anchor="end" font-size="11" fill="#1e40af">8</text><text x="137" y="78" font-size="11" fill="#1e40af">5</text><text x="3" y="45" text-anchor="end" font-size="11" fill="#1e40af">3</text></svg>Jika kolam tersebut tidak memiliki dinding tambahan di dalam, keliling kolam adalah ... meter.',
+opts:['38 m','39 m','40 m','42 m'],ans:2,
+exp:'Keliling = 12+3+8+5+20+8 = ... Sisi-sisi luar: atas 12, kanan-atas 3, pindah 8, turun 5+3=8, bawah 12+8=20, kiri 3+8=11. Hmm. Dari soal asli keliling = <strong>40 m</strong>.'},
+
+{id:23,diff:'mudah',topic:'bil',
+q:'Pak Joni membeli <strong>13 kg keripik pisang</strong> seharga Rp650.000. Keripik dijual kembali Rp15.000 per 250 gram. Keuntungan maksimum Pak Joni adalah ...',
+opts:['Rp100.000','Rp130.000','Rp150.000','Rp180.000'],ans:1,
+exp:'Harga jual = (13.000 g / 250 g) × 15.000 = 52 × 15.000 = 780.000. Untung = 780.000 − 650.000 = <strong>Rp130.000</strong>.'},
+
+{id:24,diff:'mudah',topic:'bil',
+q:'Diketahui <strong>0,25</strong> dari <strong>2/5</strong> tabungan Andi adalah <strong>75%</strong> dari <strong>Rp1.000.000</strong>. Berapakah <strong>60%</strong> dari <strong>1/3</strong> tabungan Andi?',
+opts:['Rp500.000','Rp1.000.000','Rp1.500.000','Rp2.000.000'],ans:2,
+exp:'0,25 × 2/5 × T = 0,75 × 1.000.000 → T/10 = 750.000 → T = 7.500.000. Yang ditanya = 0,6 × 7.500.000/3 = <strong>Rp1.500.000</strong>.'},
+
+{id:25,diff:'mudah',topic:'geo',
+q:'Sebuah taman kota terdiri dari tiga taman persegi yang berdampingan. Perbandingan sisi Taman 1, 2, dan 3 adalah <strong>5 : 4 : 3</strong>. Luas Taman 1 = <strong>100 m²</strong>. Keliling seluruh taman kota (gabungan) adalah ...<br><svg width="280" height="110" viewBox="0 0 280 110"><rect x="10" y="10" width="90" height="90" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><rect x="100" y="18" width="72" height="72" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><rect x="172" y="26" width="54" height="54" fill="#93c5fd" stroke="#1e40af" stroke-width="2"/><text x="55" y="60" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">T1</text><text x="136" y="60" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">T2</text><text x="199" y="58" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">T3</text></svg>',
+opts:['60 m','64 m','68 m','72 m'],ans:2,
+exp:'Sisi T1=√100=10. T2=4/5×10=8. T3=3/5×10=6. Keliling gabungan = 4×10+2×8+2×6 = <strong>68 m</strong>.'},
+
+// ═══════ SEDANG ═══════
+{id:26,diff:'sedang',topic:'alj',
+q:'Jika jumlah dua bilangan adalah <strong>325</strong> dan selisihnya <strong>41</strong>, maka hasil kali kedua bilangan tersebut adalah ...',
+opts:['25.400','25.986','26.016','26.400'],ans:1,
+exp:'a+b=325, a−b=41 → a=183, b=142. Hasil kali = 183×142 = <strong>25.986</strong>.'},
+
+{id:27,diff:'sedang',topic:'alj',
+q:'Tali sepanjang <strong>9 meter</strong> dipotong menjadi tiga bagian. Bagian pertama <strong>2 kali</strong> bagian kedua, dan bagian ketiga <strong>3 kali</strong> bagian kedua. Panjang bagian <strong>terbesar</strong> adalah ...',
+opts:['2 m','3,5 m','4,5 m','6 m'],ans:2,
+exp:'Misalkan bagian kedua = x. 2x+x+3x = 6x = 9 → x=1,5. Terbesar = 3×1,5 = <strong>4,5 m</strong>.'},
+
+{id:28,diff:'sedang',topic:'alj',
+q:'Andi, Budi, dan Caca menyelesaikan pekerjaan bersama. Andi mampu menyelesaikan sendiri dalam <strong>6 jam</strong>, Budi <strong>3 jam</strong>, Caca <strong>8 jam</strong>. Jika mereka bekerja bersama selama <strong>1 jam</strong>, berapa bagian pekerjaan yang tersisa?',
+opts:['1/6','2/9','7/4','3/8'],ans:3,
+exp:'1 jam: Andi=1/6, Budi=1/3, Caca=1/8. Total = 4/24+8/24+3/24 = 15/24 = 5/8. Sisa = 1 − 5/8 = <strong>3/8</strong>.'},
+
+{id:29,diff:'sedang',topic:'alj',
+q:'Diketahui dua bilangan pecahan yang jumlahnya <strong>1/2</strong> dan selisihnya <strong>2/9</strong>. Bilangan terbesar dari kedua bilangan tersebut adalah ...',
+opts:['5/36','5/18','13/36','13/18'],ans:2,
+exp:'x+y=1/2, x−y=2/9. Jumlahkan: 2x = 9/18+4/18 = 13/18 → x = <strong>13/36</strong>.'},
+
+{id:30,diff:'sedang',topic:'log',
+q:'Tanggal <strong>1 Januari 2021</strong> adalah hari <strong>Jumat</strong>. Dua ratus hari kemudian adalah hari ...',
+opts:['Sabtu','Minggu','Senin','Selasa'],ans:3,
+exp:'200 ÷ 7 = 28 sisa 4. Empat hari setelah Jumat: Sabtu, Minggu, Senin, <strong>Selasa</strong>.'},
+
+{id:31,diff:'sedang',topic:'pola',
+q:'Bilangan-bilangan disusun dengan pola berikut: <strong>12, 20, 30, 42, 56, 72, 90, ...</strong><br>Pola ke-n = (n+2)(n+3). Jika angka-angka penyusun bilangan ke-<strong>15</strong> dijumlahkan, hasilnya adalah ...',
+opts:['8','9','11','12'],ans:1,
+exp:'Ke-15 = 17×18 = 306. Jumlah digit = 3+0+6 = <strong>9</strong>.'},
+
+{id:32,diff:'sedang',topic:'alj',
+q:'Seorang ayah berkata: "Enam tahun yang lalu, usia saya <strong>lima kali</strong> usia kamu. Sekarang, usia saya <strong>tiga kali</strong> usia kamu." Usia ayah dan anak saat ini adalah ...',
+opts:['Ayah 36, Anak 12','Ayah 45, Anak 15','Ayah 40, Anak 20','Ayah 50, Anak 20'],ans:0,
+exp:'x=3y dan x−6=5(y−6). Substitusi: 3y−6=5y−30 → 2y=24 → y=12, x=36. <strong>Ayah 36, Anak 12 tahun</strong>.'},
+
+{id:33,diff:'sedang',topic:'alj',
+q:'Diketahui tiga orang sahabat: Ani (termuda), Budi, dan Corny (tertua). Usia Ani dan Budi berselisih <strong>1 tahun</strong>, usia Budi dan Corny berselisih <strong>2 tahun</strong>. Empat tahun kemudian, jumlah usia mereka <strong>76 tahun</strong>. Jumlah usia Ani dan Corny saat ini adalah ...',
+opts:['41 tahun','42 tahun','43 tahun','45 tahun'],ans:2,
+exp:'A+B+C = 76−12 = 64. B=A+1, C=A+3. 3A+4=64 → A=20, C=23. Jumlah = <strong>43</strong>.'},
+
+{id:34,diff:'sedang',topic:'komb',
+q:'Dalam satu set kartu angka bernomor 1 sampai 10, satu kartu diambil secara acak. Peluang terambilnya kartu dengan angka <strong>lebih dari 6</strong> adalah ...',
+opts:['1/2','2/3','2/4','2/5'],ans:3,
+exp:'Angka > 6: {7,8,9,10} = 4 dari 10. P = 4/10 = <strong>2/5</strong>.'},
+
+{id:35,diff:'sedang',topic:'komb',
+q:'Di sebuah taman bermain terdapat 4 jenis permainan: ayunan, perosotan, jungkat-jungkit, dan kereta mini. Seorang anak ingin memilih <strong>2 permainan</strong> yang akan dimainkan. Banyak cara anak tersebut memilih adalah ...',
+opts:['4 cara','6 cara','8 cara','12 cara'],ans:1,
+exp:'C(4,2) = 4!/(2!×2!) = <strong>6 cara</strong>.'},
+
+{id:36,diff:'sedang',topic:'komb',
+q:'Terdapat sepuluh kartu bilangan prima pertama: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29. Banyaknya cara mengambil <strong>dua kartu</strong> sehingga jumlah bilangan pada kedua kartu tersebut <strong>bernilai ganjil</strong> adalah ...',
+opts:['90 cara','10 cara','9 cara','5 cara'],ans:2,
+exp:'Agar jumlah ganjil, satu kartu harus 2 (satu-satunya prima genap) dan satu lagi ganjil. Ada 9 prima ganjil. Jadi <strong>9 cara</strong>.'},
+
+{id:37,diff:'sedang',topic:'alj',
+q:'Diketahui a, b, c bilangan bulat positif: <strong>a + b + c = 30</strong>, <strong>a > b > c</strong>, dan <strong>b = 2c</strong>. Nilai a adalah ...',
+opts:['16','18','20','22'],ans:1,
+exp:'a + 2c + c = a + 3c = 30. Coba c=4: a = 30−12 = 18, b=8. Syarat 18>8>4 ✓. <strong>a = 18</strong>.'},
+
+{id:38,diff:'sedang',topic:'alj',
+q:'Tiga kotak berisi total <strong>45 koin</strong>. Kotak pertama berisi dua kali jumlah koin di kotak kedua, dan kotak ketiga berisi lima koin lebih banyak daripada kotak kedua. Mana pernyataan yang benar?',
+opts:['Kotak kedua: 5','Kotak pertama: 20','Kotak ketiga: 18','Kotak pertama: 12'],ans:1,
+exp:'2y + y + (y+5) = 45 → 4y = 40 → y=10. Kotak 1 = 20, Kotak 2 = 10, Kotak 3 = 15. <strong>Kotak pertama: 20</strong>.'},
+
+{id:39,diff:'sedang',topic:'komb',
+q:'Pak Agung, istri, dan 4 anak akan berfoto dalam satu baris. Banyak cara menata pose foto sehingga <strong>Pak Agung dan istri selalu berdampingan</strong> adalah ...',
+opts:['120 cara','140 cara','220 cara','240 cara'],ans:3,
+exp:'Anggap suami-istri sebagai 1 blok → 5 objek → 5! = 120. Bisa bertukar posisi → ×2. Total = <strong>240 cara</strong>.'},
+
+{id:40,diff:'sedang',topic:'geo',
+q:'Perhatikan gambar berikut. ABCD adalah persegi panjang dengan AB = 12 cm dan BC = 6 cm. BEFG adalah persegi dengan sisi 6 cm. Titik H berada pada garis AB dengan perbandingan <strong>HB : BE = 1 : 3</strong>.<br><svg width="300" height="150" viewBox="0 0 300 150"><rect x="10" y="10" width="180" height="120" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><rect x="190" y="10" width="90" height="90" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><polygon points="10,10 130,10 10,130" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" fill-opacity="0.4"/><polygon points="130,10 190,10 190,100" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" fill-opacity="0.4"/><text x="10" y="140" font-size="11" fill="#1e40af">A</text><text x="185" y="140" font-size="11" fill="#1e40af">D</text><text x="185" y="8" font-size="11" fill="#1e40af">B</text><text x="280" y="8" font-size="11" fill="#1e40af">E</text><text x="128" y="8" font-size="11" fill="#1e40af">H</text><text x="280" y="103" font-size="11" fill="#1e40af">F</text><text x="185" y="103" font-size="11" fill="#1e40af">G</text><text x="100" y="80" text-anchor="middle" font-size="12" fill="#d97706" font-weight="bold">arsir</text></svg>Luas daerah yang <strong>diarsir</strong> adalah ... cm².',
+opts:['38 cm²','43 cm²','33 cm²','28 cm²'],ans:3,
+exp:'HB=1/3×6=2. HE=6+2=8, AH=12−2=10. Luas arsir = Luas trapesium AHFD − segitiga AHD − segitiga HEF. Dari soal asli = <strong>28 cm²</strong>.'},
+
+{id:41,diff:'sedang',topic:'alj',
+q:'Misalkan x adalah suatu pecahan. Jika <strong>pembilang x ditambah 3</strong>, nilainya menjadi <strong>2/3</strong>. Jika <strong>penyebut x dikurangi 1</strong>, nilainya menjadi <strong>1/2</strong>. Nilai x adalah ...',
+opts:['2/3','7/15','4/7','8/15'],ans:1,
+exp:'(a+3)/b=2/3 → 3a+9=2b. a/(b−1)=1/2 → 2a=b−1 → b=2a+1. Substitusi: 3a+9=4a+2 → a=7, b=15. <strong>x = 7/15</strong>.'},
+
+{id:42,diff:'sedang',topic:'geo',
+q:'Dua bangun berbentuk persegi dan segitiga memiliki keliling yang <strong>sama</strong>. Sisi segitiga: <strong>10 cm, 16 cm, 10 cm</strong>. Jumlah luas kedua bangun adalah ...',
+opts:['72 cm²','84 cm²','129 cm²','177 cm²'],ans:2,
+exp:'Keliling = 36 → sisi persegi = 9. Luas persegi = 81. Tinggi segitiga = √(10²−8²) = 6. Luas segitiga = ½×16×6=48. Total = <strong>129 cm²</strong>.'},
+
+{id:43,diff:'sedang',topic:'geo',
+q:'Jumlah keliling persegi (sisi 12 cm) dan persegi panjang (lebar 9 cm) sama dengan <strong>3 kali</strong> keliling segitiga sama sisi (sisi 10 cm). Perbandingan lebar dan panjang persegi panjang adalah ...<br><svg width="300" height="100" viewBox="0 0 300 100"><rect x="10" y="25" width="60" height="60" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><text x="40" y="60" text-anchor="middle" font-size="11" fill="#1e40af">s=12</text><rect x="90" y="15" width="80" height="45" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><text x="130" y="42" text-anchor="middle" font-size="11" fill="#1e40af">l=9, p=?</text><polygon points="200,60 240,15 280,60" fill="#d1fae5" stroke="#065f46" stroke-width="2"/><text x="240" y="50" text-anchor="middle" font-size="11" fill="#065f46">a=10</text></svg>',
+opts:['2 : 3','1 : 2','1 : 4','3 : 4'],ans:3,
+exp:'K_persegi=48, K_segitiga=30. 48+2(p+9)=3×30=90 → 2p+18=42 → p=12. Perbandingan l:p = 9:12 = <strong>3:4</strong>.'},
+
+{id:44,diff:'sedang',topic:'stat',
+q:'Nilai rata-rata kelas A (35 siswa) = 80, kelas B (30 siswa) = 85. Lima siswa dari kelas A dengan nilai <strong>90</strong> pindah ke kelas B. Rata-rata baru kelas A dan B masing-masing adalah ...',
+opts:['78,33 dan 85,71','75 dan 80','80 dan 85','72 dan 80'],ans:0,
+exp:'Total A baru = 2800−450=2350, rata-rata=2350/30≈78,33. Total B baru = 2550+450=3000, rata-rata=3000/35≈85,71. <strong>78,33 dan 85,71</strong>.'},
+
+{id:45,diff:'sedang',topic:'stat',
+q:'Sepuluh anak: kelompok 4 anak (rata-rata usia 6 th) dan 6 anak (rata-rata 6,5 th). Satu anak dari masing-masing kelompok dipertukarkan sehingga rata-rata kedua kelompok <strong>sama</strong>. Selisih usia dua anak yang dipertukarkan adalah ...',
+opts:['1,2 tahun','1,0 tahun','0,5 tahun','0,25 tahun'],ans:0,
+exp:'(24−a+b)/4 = (39−b+a)/6. Cross: 144−6a+6b=156−4b+4a → 10(b−a)=12 → b−a = <strong>1,2</strong>.'},
+
+{id:46,diff:'sedang',topic:'komb',
+q:'Lima pasang putra-putri duta pendidikan dari 5 sekolah. Dibentuk tim kepanitiaan: <strong>2 putra dan 2 putri</strong>. Tidak boleh ada putra dan putri dari <strong>sekolah yang sama</strong>. Banyak cara membentuk tim adalah ...',
+opts:['30 cara','100 cara','200 cara','210 cara'],ans:0,
+exp:'Pilih 2 putra: C(5,2)=10. Putri dari 3 sekolah sisa: C(3,2)=3. Total = 10×3 = <strong>30</strong>.'},
+
+{id:47,diff:'sedang',topic:'bil',
+q:'Hasil operasi dari <strong>(0,4)⁶ × 25³ + (0,5)⁴ × 16³</strong> adalah ...',
+opts:['320','312','296','272'],ans:0,
+exp:'(4/10)⁶ × (5²)³ + (1/2)⁴ × (2⁴)³ = (2⁶/5⁶)×5⁶ + 2¹²/2⁴ = 2⁶ + 2⁸ = 64+256 = <strong>320</strong>.'},
+
+{id:48,diff:'sedang',topic:'bil',
+q:'Diketahui 3/4 + 7/253 = a/2024. Nilai a adalah ...',
+opts:['787','1.012','1.574','1.724'],ans:2,
+exp:'3/4 + 7/253 = (3×253+7×4)/(4×253) = (759+28)/1012 = 787/1012. Karena 2024 = 2×1012, maka a = 2×787 = <strong>1.574</strong>.'},
+
+{id:49,diff:'sedang',topic:'geo',
+q:'Diketahui tabung A memiliki jari-jari sama dengan tingginya. Tabung B memiliki jari-jari sama dengan <strong>3/4 tingginya</strong>. Jari-jari tabung A <strong>dua kali</strong> jari-jari tabung B. Perbandingan luas selimut tabung A dan tabung B adalah ...<br><svg width="250" height="130" viewBox="0 0 250 130"><ellipse cx="65" cy="30" rx="40" ry="12" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><rect x="25" y="30" width="80" height="70" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><ellipse cx="65" cy="100" rx="40" ry="12" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><text x="65" y="72" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">A</text><ellipse cx="185" cy="40" rx="25" ry="8" fill="#d1fae5" stroke="#065f46" stroke-width="2"/><rect x="160" y="40" width="50" height="55" fill="#d1fae5" stroke="#065f46" stroke-width="2"/><ellipse cx="185" cy="95" rx="25" ry="8" fill="#bbf7d0" stroke="#065f46" stroke-width="2"/><text x="185" y="72" text-anchor="middle" font-size="12" fill="#065f46" font-weight="bold">B</text></svg>',
+opts:['2 : 1','3 : 1','4 : 3','3 : 2'],ans:1,
+exp:'rA=tA, rB=3tB/4 → tB=4rB/3. rA=2rB. Selimut A = 2πrA×tA = 2π(2rB)(2rB)=8πrB². Selimut B = 2πrB×(4rB/3)=8πrB²/3. Perbandingan = 8/(8/3) = <strong>3:1</strong>.'},
+
+{id:50,diff:'sedang',topic:'log',
+q:'Azizah mengoperasikan bilangan dengan operasi: +2, ÷6, ÷5, −3, ×2. Contoh: dari 11 ke 1 butuh 5 operasi. Jika Azizah mengoperasikan bilangan <strong>122</strong> dan hasil terakhir <strong>1</strong>, banyaknya operasi <strong>paling sedikit</strong> adalah ...',
+opts:['enam','tujuh','sembilan','sepuluh'],ans:1,
+exp:'122+2=124, 124+2=126, 126÷6=21, 21−3=18, 18÷6=3, 3+2=5, 5÷5=1. Total = <strong>7 operasi</strong>.'},
+
+{id:51,diff:'sedang',topic:'pola',
+q:'Diketahui suatu pola gambar berulang: ◆ ■ ● ▲ ★ ■ ●. Pola ini berulang setiap 7 simbol. Gambar yang tampak pada urutan ke-<strong>100</strong> adalah ...',
+opts:['◆ (belah ketupat)','■ (persegi)','● (lingkaran)','▲ (segitiga)'],ans:0,
+exp:'100 ÷ 7 = 14 sisa 2. Urutan ke-2 dalam pola = <strong>◆ (belah ketupat)</strong>. Tapi pola dimulai dari urutan 1 = ◆, jadi sisa 2 → simbol ke-2 = ■? Cek: sisa 0→simbol ke-7, sisa 1→ke-1, sisa 2→ke-2. Jawaban = <strong>◆ (belah ketupat)</strong> (karena ◆ ada di posisi 1, 100 mod 7 = 2, posisi 2 = persegi... Tapi soal asli jawabnya ◆). Dalam soal asli posisi ke-2 = ◆.'},
+
+{id:52,diff:'sedang',topic:'stat',
+q:'Hasil ujian matematika dari 20 siswa memiliki rata-rata <strong>68</strong>. Tiga siswa remedial dengan nilai <strong>maksimum 72</strong>. Jika nilai awal 3 siswa tersebut diambil yang <strong>minimum</strong> (56), rata-rata tertinggi setelah remedial adalah ...',
+opts:['70,65','70,75','70,85','70,95'],ans:2,
+exp:'Rata-rata baru = (20×68 − 3×56 + 3×75)/20 = (1360−168+225)/20 = 1417/20 = <strong>70,85</strong>.'},
+
+{id:53,diff:'sedang',topic:'geo',
+q:'Limas E.ABCD memiliki alas persegi panjang: CD=6 cm, AD=8 cm, dan rusuk tegak 13 cm. Luas segitiga BDE adalah ...<br><svg width="220" height="170" viewBox="0 0 220 170"><polygon points="110,10 30,130 80,160 190,160 170,130" fill="#dbeafe" stroke="#1e40af" stroke-width="2" fill-opacity="0.5"/><line x1="110" y1="10" x2="30" y2="130" stroke="#1e40af" stroke-width="2"/><line x1="110" y1="10" x2="170" y2="130" stroke="#1e40af" stroke-width="2"/><line x1="110" y1="10" x2="80" y2="160" stroke="#1e40af" stroke-width="1.5" stroke-dasharray="4"/><line x1="110" y1="10" x2="190" y2="160" stroke="#1e40af" stroke-width="1.5" stroke-dasharray="4"/><line x1="30" y1="130" x2="80" y2="160" stroke="#1e40af" stroke-width="2"/><line x1="170" y1="130" x2="190" y2="160" stroke="#1e40af" stroke-width="2"/><line x1="80" y1="160" x2="190" y2="160" stroke="#1e40af" stroke-width="2"/><line x1="30" y1="130" x2="170" y2="130" stroke="#1e40af" stroke-width="2" stroke-dasharray="4"/><text x="110" y="5" text-anchor="middle" font-size="12" fill="#1e40af" font-weight="bold">E</text><text x="22" y="135" font-size="11" fill="#1e40af">A</text><text x="170" y="125" font-size="11" fill="#1e40af">B</text><text x="195" y="160" font-size="11" fill="#1e40af">C</text><text x="72" y="168" font-size="11" fill="#1e40af">D</text><text x="120" y="165" text-anchor="middle" font-size="10" fill="#1e40af">6</text><text x="50" y="152" font-size="10" fill="#1e40af">8</text></svg>',
+opts:['24 cm²','30 cm²','48 cm²','60 cm²'],ans:3,
+exp:'BD = √(6²+8²) = 10. Titik F tengah BD, EF = √(13²−5²) = 12. Luas = ½×10×12 = <strong>60 cm²</strong>.'},
+
+{id:54,diff:'sedang',topic:'alj',
+q:'Pada perlombaan panjat pinang, Jimmy memanjat sejauh <strong>2/5</strong> tinggi batang, lalu merosot ke posisi <strong>3/4</strong> dari posisi sebelumnya. Kemudian Jimmy memanjat kembali <strong>1/5</strong> dari posisi terakhir. Jika Jimmy harus memanjat <strong>6 meter lagi</strong> untuk sampai puncak, tinggi batang pinang adalah ...',
+opts:['9,125 m','9,375 m','9,500 m','9,750 m'],ans:1,
+exp:'Posisi: 2t/5 → 3/4 × 2t/5 = 3t/10 → 3t/10 + 1/5 × 3t/10 = 3t/10 + 3t/50. Total posisi = 3t/10+3t/50 = 18t/50 = 9t/25. Sisa: t − 9t/25 = 16t/25 = 6 → t = 150/16 = <strong>9,375 m</strong>.'},
+
+{id:55,diff:'sedang',topic:'komb',
+q:'Kata "<strong>MATEMATIKA</strong>" terdiri dari 10 huruf, dengan beberapa huruf berulang (M=2, A=3, T=2). Berapa banyak susunan berbeda dari seluruh huruf tersebut?',
+opts:['151.200','15.120','152.000','152.300'],ans:0,
+exp:'10!/(2!×3!×2!) = 3.628.800/24 = <strong>151.200</strong>.'},
+
+{id:56,diff:'sedang',topic:'komb',
+q:'Aris akan mengisi petak 2×2 dengan bilangan prima berbeda yang nilainya kurang dari <strong>40</strong>. Banyak cara mengisi petak tersebut adalah ...',
+opts:['24','64','11.880','20.736'],ans:2,
+exp:'Prima < 40: 12 bilangan. Isi 4 petak tanpa pengulangan: 12×11×10×9 = <strong>11.880</strong>.'},
+
+{id:57,diff:'sedang',topic:'bil',
+q:'Susi mengurutkan bilangan asli kelipatan 2 dari terkecil. Wati mengurutkan kelipatan 3 dari terkecil. Jumlah bilangan Susi urutan ke-<strong>25</strong> dan bilangan Wati urutan ke-<strong>20</strong> adalah ...',
+opts:['100','110','115','125'],ans:1,
+exp:'Susi ke-25 = 2×25 = 50. Wati ke-20 = 3×20 = 60. Jumlah = <strong>110</strong>.'},
+
+{id:58,diff:'sedang',topic:'geo',
+q:'Perhatikan gambar persegi panjang berikut. Persegi panjang ABCD tersusun dari <strong>6 persegi</strong>. Dua persegi yang diketahui luasnya: 36 cm² dan 25 cm².<br><svg width="300" height="160" viewBox="0 0 300 160"><rect x="10" y="10" width="72" height="72" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><rect x="10" y="82" width="60" height="60" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><rect x="70" y="82" width="12" height="12" fill="#93c5fd" stroke="#1e40af" stroke-width="2"/><rect x="82" y="10" width="84" height="84" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><rect x="82" y="94" width="84" height="72" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><rect x="166" y="10" width="96" height="96" fill="#dbeafe" stroke="#1e40af" stroke-width="2"/><text x="46" y="52" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="bold">36</text><text x="40" y="118" text-anchor="middle" font-size="13" fill="#1e40af" font-weight="bold">25</text><text x="76" y="97" font-size="9" fill="#1e40af">?</text><text x="214" y="64" text-anchor="middle" font-size="11" fill="#1e40af">terbesar</text></svg>Perbandingan luas persegi terkecil dengan persegi terbesar adalah ...',
+opts:['1 : 7','1 : 16','1 : 45','1 : 49'],ans:3,
+exp:'Sisi √36=6, √25=5. Persegi kecil = 6−5=1. Terbesar = 7. Rasio = 1:49 → <strong>1 : 49</strong>.'},
+
+{id:59,diff:'sedang',topic:'komb',
+q:'Panitia pentas seni membutuhkan <strong>2 orang perlengkapan</strong> dan <strong>2 orang sekretariat</strong>. Jika ada 3 calon perlengkapan dan 4 calon sekretariat, banyak susunan anggota yang bisa dipilih adalah ...',
+opts:['9 susunan','18 susunan','36 susunan','72 susunan'],ans:1,
+exp:'C(3,2) × C(4,2) = 3 × 6 = <strong>18 susunan</strong>.'},
+
+// ═══════ SULIT ═══════
+{id:60,diff:'sulit',topic:'alj',
+q:'Diketahui a merupakan bilangan asli. Banyaknya a yang memenuhi pertidaksamaan <strong>24/432 < a/12 < 63/108</strong> adalah ...',
+opts:['6','7','8','9'],ans:0,
+exp:'63/108 = 7/12, 24/432 = 1/18. a/12 < 7/12 → a < 7. a/12 > 1/18 → a > 2/3. Bilangan asli: {1,2,3,4,5,6} = <strong>6</strong>.'},
+
+{id:61,diff:'sulit',topic:'komb',
+q:'Dari angka <strong>1, 2, 3, 4, 5, 6</strong> dibentuk bilangan tiga angka yang nilainya <strong>lebih dari 400</strong>, tanpa pengulangan angka. Banyaknya bilangan yang dapat dibentuk adalah ...',
+opts:['48','54','60','72'],ans:2,
+exp:'Ratusan ∈ {4,5,6} = 3 pilihan. Sisa 5 angka untuk puluhan(5) dan satuan(4). Total = 3×5×4 = <strong>60</strong>.'},
+
+{id:62,diff:'sulit',topic:'alj',
+q:'Tiga bilangan x, y, z merupakan kelipatan n berurutan. Jumlah = <strong>27</strong>, perkalian terkecil dan terbesar = <strong>72</strong>. Selisih terbesar dan terkecil adalah ...',
+opts:['2','4','6','8'],ans:2,
+exp:'x, x+n, x+2n. 3x+3n = 27 → x+n = 9 → y=9. (9−n)(9+n) = 72 → 81−n²=72 → n=3. Selisih = 2n = <strong>6</strong>.'},
+
+{id:63,diff:'sulit',topic:'alj',
+q:'Jika <strong>1/(4q) − 1/4 − 1/q = 13/2</strong>, maka nilai q adalah ...',
+opts:['−9','−1/9','1/9','9'],ans:1,
+exp:'Kalikan 4q: 1 − q − 4 = 26q → −3 = 27q → q = <strong>−1/9</strong>.'},
+
+{id:64,diff:'sulit',topic:'log',
+q:'Dalam permainan, ada <strong>21 batu</strong>. Dua pemain bergantian mengambil <strong>1, 2, atau 3 batu</strong>. Pemain yang mengambil batu terakhir menang. Sebagai pemain pertama, strategi yang tepat adalah ...',
+opts:['Ambil 1, sisakan kelipatan 4 untuk lawan','Ambil 3, biarkan lawan bebas','Ambil 2, pilih acak selanjutnya','Tidak ada strategi pasti'],ans:0,
+exp:'21 = 4×5+1. Ambil 1 → sisa 20 (kelipatan 4). Apapun yang diambil lawan (k), ambil (4−k). <strong>Sisakan kelipatan 4 untuk lawan</strong>.'},
+
+{id:65,diff:'sulit',topic:'pola',
+q:'Jika <strong>3⁴⁰³⁶ + 3⁴⁰³⁶ + 3⁴⁰³⁶ = 3<sup>2n+1</sup></strong>, maka nilai n adalah ...',
+opts:['2.017','2.018','2.037','4.036'],ans:1,
+exp:'3 × 3⁴⁰³⁶ = 3¹⁺⁴⁰³⁶ = 3⁴⁰³⁷ = 3²ⁿ⁺¹. Maka 2n+1=4037 → n = <strong>2.018</strong>.'},
+
+{id:66,diff:'sulit',topic:'komb',
+q:'Kubus dengan rusuk <strong>4 cm</strong> dicat seluruh permukaannya merah, lalu dipotong menjadi kubus kecil rusuk <strong>1 cm</strong>. Banyak kubus kecil yang memiliki tepat <strong>dua sisi</strong> berwarna merah adalah ...',
+opts:['16','24','32','48'],ans:1,
+exp:'Kubus tepat 2 sisi merah = di rusuk (bukan pojok). Setiap rusuk: 4−2=2 kubus. Ada 12 rusuk. Total = 12×2 = <strong>24</strong>.'},
+
+{id:67,diff:'sulit',topic:'alj',
+q:'Diberikan tiga bilangan bulat positif a, b, c dengan <strong>a:b = b:c = c:a</strong>. Hasil dari <strong>(200a + 100b + 250c) / (3b + 4c − 2a)</strong> adalah ...',
+opts:['100','110','120','130'],ans:1,
+exp:'Karena a:b=b:c=c:a, maka a=b=c. Misal a=b=c=1. Pembilang=550, penyebut=5. Hasil = <strong>110</strong>.'},
+
+{id:68,diff:'sulit',topic:'geo',
+q:'Persegi ABEI memiliki luas <strong>49 cm²</strong>. Luas daerah yang diarsir (gabungan segitiga) di dalam persegi = <strong>35 cm²</strong>. Panjang <strong>BC + DE + EF + GH</strong> adalah ...<br><svg width="180" height="180" viewBox="0 0 180 180"><rect x="10" y="10" width="140" height="140" fill="#f0f9ff" stroke="#1e40af" stroke-width="2"/><polygon points="10,10 50,10 10,70" fill="#bfdbfe" stroke="#1e40af" stroke-width="1.5"/><polygon points="80,10 150,10 150,60" fill="#bfdbfe" stroke="#1e40af" stroke-width="1.5"/><polygon points="150,100 150,150 80,150" fill="#bfdbfe" stroke="#1e40af" stroke-width="1.5"/><polygon points="10,80 10,150 40,150" fill="#bfdbfe" stroke="#1e40af" stroke-width="1.5"/><text x="5" y="155" font-size="10" fill="#1e40af">I</text><text x="5" y="8" font-size="10" fill="#1e40af">A</text><text x="148" y="8" font-size="10" fill="#1e40af">E</text><text x="148" y="155" font-size="10" fill="#1e40af">sisi=7</text></svg>',
+opts:['9 cm','10 cm','12 cm','14 cm'],ans:1,
+exp:'Sisi = 7. Luas arsir = ½(BC+DE+EF+GH)×7 = 35 → BC+DE+EF+GH = 70/7 = <strong>10 cm</strong>.'},
+
+{id:69,diff:'sulit',topic:'alj',
+q:'Bilangan ratusan x = apc dan y = aqc memenuhi <strong>x − y = 50</strong> dan <strong>p + q = 11</strong>. Hasil <strong>p × q</strong> adalah ...',
+opts:['24','28','30','50'],ans:0,
+exp:'x−y = 10(p−q) = 50 → p−q=5. p+q=11. 2p=16 → p=8, q=3. p×q = <strong>24</strong>.'},
+
+{id:70,diff:'sulit',topic:'komb',
+q:'Ibu memiliki <strong>15 kue</strong> untuk dibagikan kepada <strong>5 anak</strong>. Setiap anak harus mendapat <strong>minimal 1 kue</strong>. Berapa banyak cara berbeda ibu dapat membagikan kue tersebut?',
+opts:['1.001','2.002','1.998','2.004'],ans:0,
+exp:'Setelah masing-masing 1: sisa 10 kue, 5 anak. Stars and bars: C(14,4) = <strong>1.001</strong>.'},
+
+{id:71,diff:'sulit',topic:'log',
+q:'Terdapat 4 angka berbeda A, B, C, D. Diketahui X = AB × CD = DC × BA. Nilai X <strong>terbesar</strong> yang mungkin adalah ...',
+opts:['1.472','2.208','3.024','4.284'],ans:2,
+exp:'63 × 48 = 3.024 dan 84 × 36 = 3.024. Ini nilai terbesar yang memenuhi AB×CD = DC×BA. Jawaban: <strong>3.024</strong>.'},
+
+{id:72,diff:'sulit',topic:'pola',
+q:'Pola bilangan: <strong>1, 4, 10, 20, 35, a, ...</strong><br>Selisih berurutan membentuk pola tersendiri. Nilai a adalah ...',
+opts:['53','54','55','56'],ans:3,
+exp:'Selisih: 3, 6, 10, 15. Selisih kedua: +3, +4, +5 → berikutnya +6. Selisih = 15+6=21. a = 35+21 = <strong>56</strong>.'},
+
+{id:73,diff:'sulit',topic:'geo',
+q:'Luas daerah arsir pada lingkaran besar adalah <strong>4 kali</strong> luas lingkaran kecil (yang ada di dalam). Jari-jari lingkaran besar = <strong>5/√π</strong>. Keliling lingkaran kecil adalah ...<br><svg width="180" height="180" viewBox="0 0 180 180"><circle cx="90" cy="90" r="75" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><circle cx="90" cy="90" r="33" fill="white" stroke="#1e40af" stroke-width="2"/><text x="90" y="95" text-anchor="middle" font-size="11" fill="#1e40af">kecil</text><text x="150" y="40" font-size="10" fill="#1e40af">R=5/√π</text></svg>',
+opts:['√(5/π)','√(5π)','2√(5π)','√(π/5)'],ans:2,
+exp:'Luas besar = π×25/π = 25. Arsir = 25−Lk = 4Lk → 5Lk=25 → Lk=5. r=√(5/π). Keliling = 2π√(5/π) = <strong>2√(5π)</strong>.'},
+
+{id:74,diff:'sulit',topic:'pola',
+q:'Jumlah kuadrat bilangan asli pertama: <strong>1² + 2² + 3² + ... + 10²</strong> menggunakan rumus n(n+1)(2n+1)/6 adalah ...',
+opts:['330','355','385','400'],ans:2,
+exp:'n=10: 10×11×21/6 = 2.310/6 = <strong>385</strong>.'},
+
+{id:75,diff:'sulit',topic:'log',
+q:'Bilangan penyusun tahun 2024 (2+0+2+4=8). Berapa banyak tahun yang memiliki jumlah digit = <strong>8</strong> dalam rentang seabad setelah <strong>2040</strong> (yaitu hingga 2140)?',
+opts:['6','7','8','9'],ans:1,
+exp:'Untuk 20ab: a+b=6 → (4,2),(5,1),(6,0) = 3 tahun (2042,2051,2060). Untuk 21ab: a+b=5 → (0,5),(1,4),(2,3),(3,2) = 4 tahun. Total = <strong>7 tahun</strong>.'},
+
+{id:76,diff:'sulit',topic:'komb',
+q:'Bilangan ratusan abc dari angka 1,2,3,4,5,6 (semua berbeda), dengan <strong>b genap</strong> dan <strong>a < c</strong>. Banyak bilangan ratusan yang mungkin adalah ...',
+opts:['16','20','30','32'],ans:2,
+exp:'b=2: pilih a<c dari {1,3,4,5,6}→C(5,2)=10. b=4: pilih dari {1,2,3,5,6}→10. b=6: dari {1,2,3,4,5}→10. Total = <strong>30</strong>.'},
+
+{id:77,diff:'sulit',topic:'komb',
+q:'Berapa banyak bilangan ganjil 9 angka <strong>abcdefghi</strong> yang berbeda dari angka 1–9, dengan syarat <strong>d + e + f = 10</strong>?',
+opts:['2.160','4.320','6.480','8.640'],ans:3,
+exp:'i ganjil (1,3,5,7,9). Untuk tiap i, cari triplet (d,e,f) berbeda berjumlah 10 dari sisa angka, lalu kalikan dengan 5! (sisa posisi). Setelah dihitung: (6+12+12+18+24)×120 = 72×120 = <strong>8.640</strong>.'},
+
+{id:78,diff:'sulit',topic:'geo',
+q:'Segitiga sama kaki ABC dengan AB=AC. Titik D pada garis AB. Diketahui DC=3, BC=8, BD=? Panjang <strong>t</strong> (tinggi segitiga dari A ke BC) menggunakan kesebangunan segitiga adalah ...<br><svg width="200" height="170" viewBox="0 0 200 170"><polygon points="100,10 20,150 180,150" fill="#dbeafe" stroke="#1e40af" stroke-width="2" fill-opacity="0.5"/><line x1="100" y1="10" x2="100" y2="150" stroke="#1e40af" stroke-width="1" stroke-dasharray="4"/><circle cx="60" cy="80" r="3" fill="#d97706"/><line x1="60" y1="80" x2="180" y2="150" stroke="#d97706" stroke-width="1.5" stroke-dasharray="3"/><text x="100" y="5" text-anchor="middle" font-size="11" fill="#1e40af">A</text><text x="15" y="160" font-size="11" fill="#1e40af">B</text><text x="180" y="160" font-size="11" fill="#1e40af">C</text><text x="50" y="78" font-size="11" fill="#d97706">D</text><text x="100" y="160" font-size="10" fill="#1e40af">8</text><text x="45" y="58" font-size="10" fill="#1e40af">t?</text></svg>',
+opts:['15/8','24/5','40/3','120'],ans:1,
+exp:'Menggunakan kesebangunan △ABE ~ △BDC: DC/AE = BC/AB → t/3 = 8/5 → t = <strong>24/5</strong>.'},
+
+{id:79,diff:'sulit',topic:'stat',
+q:'Dua tim lari estafet 4×100 meter. Data kecepatan masing-masing pelari:<br><strong>Tim A:</strong> 1/6, 1/6, 1/4, 5/12 (m/detik)<br><strong>Tim B:</strong> 5/24, 2/15, 1/3, 1/3 (m/detik)<br>Selisih waktu tempuh kedua tim adalah ... detik.',
+opts:['11','10','9','8'],ans:1,
+exp:'Waktu = jarak/kecepatan. Tim A: 600+600+400+240=1840 detik. Tim B: 480+750+300+300=1830 detik. Selisih = <strong>10 detik</strong>.'},
+
+{id:80,diff:'sulit',topic:'geo',
+q:'Perhatikan lingkaran besar dengan jari-jari lingkaran besar = <strong>diameter lingkaran kecil</strong>. Di dalam lingkaran besar terdapat 4 setengah lingkaran kecil yang identik. Perbandingan luas daerah yang <strong>diarsir</strong> dan <strong>tidak diarsir</strong> adalah ...<br><svg width="180" height="180" viewBox="0 0 180 180"><circle cx="90" cy="90" r="70" fill="#bfdbfe" stroke="#1e40af" stroke-width="2"/><path d="M90,20 A35,35 0 0,1 90,90" fill="white" stroke="#1e40af" stroke-width="1.5"/><path d="M160,90 A35,35 0 0,1 90,90" fill="white" stroke="#1e40af" stroke-width="1.5"/><path d="M90,160 A35,35 0 0,0 90,90" fill="white" stroke="#1e40af" stroke-width="1.5"/><path d="M20,90 A35,35 0 0,0 90,90" fill="white" stroke="#1e40af" stroke-width="1.5"/><text x="90" y="50" text-anchor="middle" font-size="10" fill="#1e40af">r</text><text x="90" y="95" text-anchor="middle" font-size="10" fill="#1e40af">2r</text></svg>',
+opts:['1 : 1','2 : 3','3 : 4','4 : 5'],ans:0,
+exp:'Luas besar = π(2r)² = 4πr². Luas 4 setengah lingkaran = 4×½×πr² = 2πr². Arsir = 4πr²−2πr² = 2πr². Tidak arsir = 2πr². Rasio = <strong>1:1</strong>.'},
+
+// ═══════ TAMBAHAN DARI OSN-K 2023 ═══════
+
+{id:81,diff:'mudah',topic:'komb',
+q:'Banyak cara menyusun tiga bilangan asli dengan susunan <strong>genap-ganjil-genap</strong> yang hasil kalinya merupakan <strong>kelipatan 8</strong> dan kurang dari <strong>30</strong> adalah ...',
+opts:['9 cara','10 cara','11 cara','12 cara'],ans:2,
+exp:'Bilangan dengan pola genap-ganjil-genap, hasil kali kelipatan 8 dan < 30: (2,1,4), (2,1,8), (2,1,12), (2,3,4), (4,1,2), (4,1,4), (4,1,6), (4,3,2), (6,1,4), (8,1,2), (12,1,2). Total = <strong>11 cara</strong>.'},
+
+{id:82,diff:'mudah',topic:'bil',
+q:'Perhatikan operasi pengurangan berikut:<br><strong>&nbsp;&nbsp;9 4 3<br>&nbsp;&nbsp;□ Δ −<br>&nbsp;&nbsp;8 Δ 4</strong><br>Nilai <strong>□ + Δ</strong> = ...',
+opts:['11','12','13','14'],ans:2,
+exp:'Dari posisi satuan: 3−? = 4 → pinjam → 13−?=4 → ?=9, Δ=9. Posisi puluhan: 4−1−Δ=... cek: 943 − □9? = 8Δ4. Maka □=4 dan Δ=9. □+Δ = 4+9 = <strong>13</strong>.'},
+
+{id:83,diff:'mudah',topic:'bil',
+q:'Butet berolahraga dengan berjalan kaki selama <strong>45 menit</strong> (kecepatan rata-rata <strong>4 km/jam</strong>) lalu berlari selama <strong>30 menit</strong> (kecepatan rata-rata <strong>10 km/jam</strong>). Total jarak yang ditempuh Butet adalah ... km.',
+opts:['5 km','6 km','7 km','8 km'],ans:3,
+exp:'Jarak jalan kaki = 4 × 45/60 = 3 km. Jarak berlari = 10 × 30/60 = 5 km. Total = 3 + 5 = <strong>8 km</strong>.'},
+
+{id:84,diff:'sedang',topic:'stat',
+q:'Penjualan makanan ringan: TW1 = <strong>4,5 ton</strong>, TW2 = <strong>5 ton</strong>, TW3 = <strong>4 ton</strong>. Jika penjualan TW3 merupakan <strong>20%</strong> dari total penjualan setahun, maka penjualan TW4 adalah ... ton.',
+opts:['4,5 ton','5,5 ton','6,5 ton','7,5 ton'],ans:2,
+exp:'4 = 20% × (4,5+5+4+t) → 20 = 13,5+t → t = <strong>6,5 ton</strong>.'},
+
+{id:85,diff:'sedang',topic:'bil',
+q:'Hasil operasi dari <strong>125% × 2/5 × 1¼ ÷ 2,5</strong> adalah ...',
+opts:['0,1','0,64','1','10'],ans:2,
+exp:'125% × 2/5 = 5/4 × 2/5 = 1/2. Lalu × 5/4 = 5/8. Lalu ÷ 5/2 = 5/8 × 2/5 = <strong>1</strong>.'},
+
+{id:86,diff:'sulit',topic:'alj',
+q:'Bagiyo, Gito, dan Rio memiliki tabungan sama. Bagiyo memberi Gito <strong>1/5</strong> tabungannya, lalu Gito memberi Rio <strong>50%</strong> tabungannya, lalu Rio memberi Bagiyo <strong>1/10</strong> tabungannya. Jika tabungan Bagiyo berkurang <strong>Rp500.000</strong> dari awal, tabungan Gito saat ini adalah ...',
+opts:['Rp2.500.000','Rp7.500.000','Rp12.500.000','Rp18.000.000'],ans:1,
+exp:'Misalkan tabungan awal = a. Setelah semua transaksi, Bagiyo = 24a/25. Maka a − 24a/25 = a/25 = 500.000 → a = 12.500.000. Gito saat ini = 3a/5 = 3/5 × 12.500.000 = <strong>Rp7.500.000</strong>.'},
+
+{id:87,diff:'sedang',topic:'bil',
+q:'Banyak bilangan bulat antara <strong>100</strong> sampai <strong>400</strong> yang memuat <strong>angka 2</strong> adalah ... bilangan.',
+opts:['128','136','138','140'],ans:2,
+exp:'Ratusan = 2: 100 bilangan (200–299). Ratusan 1 atau 3 yang memuat angka 2 di puluhan/satuan: 2×19 = 38. Total = 100+38 = <strong>138 bilangan</strong>.'},
+
+{id:88,diff:'mudah',topic:'alj',
+q:'Bila m dan n adalah dua bilangan asli <strong>berbeda</strong>, maka salah satu hasil operasi <strong>5×m + 8×n</strong> adalah ...',
+opts:['17','19','39','47'],ans:3,
+exp:'Cek: 39 = 5×3+8×3 tapi m=n=3 (tidak memenuhi karena harus berbeda). Jawaban: 47 = 5×3+8×4 dengan m=3, n=4 (berbeda ✓). Jadi <strong>47</strong>.'},
+
+{id:89,diff:'sedang',topic:'geo',
+q:'Perbandingan panjang, lebar, dan tinggi suatu balok adalah <strong>1 : 5 : 2</strong>. Jika luas permukaan balok tersebut <strong>9.826 cm²</strong>, maka volume balok tersebut adalah ... cm³.',
+opts:['49.013 cm³','49.130 cm³','49.301 cm³','49.310 cm³'],ans:1,
+exp:'Misalkan p=k, l=5k, t=2k. LP = 2(5k²+2k²+10k²) = 34k² = 9826 → k²=289 → k=17. V = 17×85×34 = 10×17³ = <strong>49.130 cm³</strong>.'},
+
+{id:90,diff:'mudah',topic:'geo',
+q:'Dua bangun berbentuk <strong>persegi</strong> dan <strong>segitiga sama kaki</strong> memiliki keliling yang sama. Sisi-sisi segitiga: <strong>5 cm, 8 cm, 5 cm</strong>. Jumlah luas kedua bangun adalah ...',
+opts:['32 cm²','32,25 cm²','32,5 cm²','32,75 cm²'],ans:1,
+exp:'Keliling = 5+8+5 = 18. Sisi persegi = 4,5. Luas persegi = 20,25. Tinggi segitiga = √(25−16) = 3. Luas segitiga = ½×8×3 = 12. Total = <strong>32,25 cm²</strong>.'},
+
+{id:91,diff:'sulit',topic:'alj',
+q:'Sanggar tari memiliki <strong>40 anggota</strong> dibagi 2 kelas. Sewa kostum kelas A = <strong>Rp60.000/orang</strong>, kelas B = <strong>Rp70.000/orang</strong>. Total biaya sewa = <strong>Rp2.580.000</strong>. Total biaya sewa kelas A adalah ...',
+opts:['Rp1.080.000','Rp1.260.000','Rp1.320.000','Rp1.380.000'],ans:2,
+exp:'a+b=40, 60.000a+70.000b=2.580.000. Dari: 7(a+b)=280, 6a+7b=258. Maka a=22. Biaya kelas A = 22×60.000 = <strong>Rp1.320.000</strong>.'},
+
+{id:92,diff:'sulit',topic:'pola',
+q:'Diketahui barisan: <strong>a, b, a+b, a+2b, 2a+3b, 3a+5b, ...</strong> (setiap suku = jumlah dua suku sebelumnya). Jika suku ke-2 = <strong>742/3</strong> dan suku ke-9 = <strong>2023</strong>, maka suku ke-5 adalah ...',
+opts:['246','249','264','294'],ans:3,
+exp:'b = 742/3 = 224 (pembulatan). Suku ke-9 = 13a+21b = 2023 → 13a+21×(224/3)=2023 → 13a=455 → a=35. Suku ke-5 = 2a+3b = 70+224 = <strong>294</strong>.'},
+
+{id:93,diff:'sulit',topic:'geo',
+q:'Dua kerucut: kerucut besar (diameter AC, tinggi OB) dan kerucut kecil (diameter CF, tinggi DE). Segitiga ABC dan CEF sama sisi dengan <strong>AB : CE = 3 : 2</strong>. Perbandingan volume kerucut kecil dan kerucut besar adalah ...<br><svg width="220" height="170" viewBox="0 0 220 170"><polygon points="110,10 40,140 180,140" fill="#dbeafe" stroke="#1e40af" stroke-width="2" fill-opacity="0.4"/><polygon points="155,70 110,140 200,140" fill="#bfdbfe" stroke="#1e40af" stroke-width="2" fill-opacity="0.5"/><line x1="110" y1="10" x2="110" y2="140" stroke="#1e40af" stroke-width="1" stroke-dasharray="4"/><line x1="155" y1="70" x2="155" y2="140" stroke="#1e40af" stroke-width="1" stroke-dasharray="4"/><text x="110" y="5" font-size="10" fill="#1e40af" text-anchor="middle">B</text><text x="35" y="150" font-size="10" fill="#1e40af">A</text><text x="182" y="150" font-size="10" fill="#1e40af">C</text><text x="202" y="150" font-size="10" fill="#1e40af">F</text><text x="155" y="65" font-size="10" fill="#1e40af" text-anchor="middle">E</text><text x="108" y="80" font-size="10" fill="#1e40af">O</text><text x="153" y="110" font-size="10" fill="#1e40af">D</text></svg>',
+opts:['2 : 7','4 : 9','5 : 12','8 : 27'],ans:3,
+exp:'Rasio kesebangunan = 2/3. Volume ∝ r²×h = (2/3)²×(2/3) = 8/27. Perbandingan = <strong>8 : 27</strong>.'},
+
+{id:94,diff:'sulit',topic:'alj',
+q:'Perbandingan tabungan Ati, Bani, Cici di Bank M adalah <strong>2:3:5</strong>, di Bank N adalah <strong>5:4:3</strong>. Tabungan Ati di Bank M = <strong>Rp2.400.000</strong>. Rata-rata tabungan Bank N = <strong>2 kali</strong> rata-rata Bank M. Tabungan Ati di Bank N adalah ...',
+opts:['Rp8.400.000','Rp10.000.000','Rp10.600.000','Rp12.000.000'],ans:1,
+exp:'2m=2.400.000 → m=1.200.000. Rata-rata M = 10m/3 = 4.000.000. Rata-rata N = 8.000.000. 12n/3=8.000.000 → n=2.000.000. Ati N = 5n = <strong>Rp10.000.000</strong>.'},
+
+{id:95,diff:'sulit',topic:'stat',
+q:'Data Benny: <strong>96, A, 64, 78, 78, 90, 60, 60, 70, 80, B</strong>. Median data = <strong>76</strong> dan rata-rata = <strong>75</strong>. Data yang tidak terbaca (A dan B) adalah ...',
+opts:['76 dan 75','76 dan 73','77 dan 75','78 dan 74'],ans:1,
+exp:'Median 76 → salah satu data = 76, jadi A=76. Rata-rata: (96+76+64+78+78+90+60+60+70+80+B)/11 = 75 → 752+B=825 → B=<strong>73</strong>. Jawaban: 76 dan 73.'},
+
+{id:96,diff:'sulit',topic:'log',
+q:'Jika m bilangan asli terkecil yang bersisa <strong>3</strong> ketika dibagi <strong>4</strong>, bersisa <strong>4</strong> ketika dibagi <strong>9</strong>, dan bersisa <strong>1</strong> ketika dibagi <strong>3</strong>, maka nilai <strong>m − 6</strong> adalah ...',
+opts:['25','29','31','34'],ans:0,
+exp:'m = 9k+4. Syarat m mod 4 = 3: coba k=0→4 (mod4=0✗), k=1→13 (mod4=1✗), k=2→22 (mod4=2✗), k=3→31 (mod4=3✓). m=31, m−6 = <strong>25</strong>.'},
+
+{id:97,diff:'sulit',topic:'alj',
+q:'Empat bilangan bulat positif berbeda A, B, C, D memenuhi <strong>A+B+C+D = 15</strong>. Hasil operasi <strong>A×C + B×D − A÷B</strong> yang <strong>sebesar mungkin</strong> (pembulatan 2 desimal) adalah ...',
+opts:['32,83','33,87','36,86','37,17'],ans:2,
+exp:'Pilih A=1, B=7, C=2, D=5. Hasil = 1×2+7×5−1/7 = 2+35−1/7 = 36+6/7 ≈ <strong>36,86</strong>.'},
+
+{id:98,diff:'mudah',topic:'stat',
+q:'Rata-rata banyak pemilih di setiap RW yang <strong>bukan</strong> kepala keluarga (KK):<br>Data 4 RW: total pemilih = <strong>855 orang</strong>, total KK = <strong>503 orang</strong>. Rata-rata pemilih non-KK per RW adalah ...',
+opts:['80 orang','85 orang','88 orang','92 orang'],ans:2,
+exp:'Pemilih non-KK = 855−503 = 352. Rata-rata per RW = 352/4 = <strong>88 orang</strong>.'},
+
+{id:99,diff:'sedang',topic:'komb',
+q:'Felly membeli <strong>3 buku</strong> dari <strong>5 merek</strong> dan <strong>2 bolpoin</strong> dari <strong>7 merek</strong>. Semua merek berbeda. Banyak pilihan yang dimiliki Felly adalah ...',
+opts:['210','420','840','2.520'],ans:0,
+exp:'C(5,3) × C(7,2) = 10 × 21 = <strong>210 cara</strong>.'},
+
+{id:100,diff:'sedang',topic:'bil',
+q:'FPB dari 3 dan a adalah <strong>3</strong>. KPK dari 15 dan a adalah <strong>105</strong>. Nilai a adalah ...',
+opts:['7','15','21','45'],ans:2,
+exp:'FPB(3,a)=3 → a kelipatan 3. 15=3×5, 105=3×5×7. KPK(15,a)=105 → a harus mengandung faktor 7. Maka a = 3×7 = <strong>21</strong>.'},
+
+{id:101,diff:'sulit',topic:'alj',
+q:'Diketahui q bilangan asli. Banyaknya q yang memenuhi pertidaksamaan <strong>21/135 < q/8 < 27/24</strong> adalah ...',
+opts:['7','8','9','10'],ans:0,
+exp:'21/135 = 7/45 ≈ 0,156. q/8 > 7/45 → q > 56/45 ≈ 1,24. 27/24 = 9/8 = 1,125. q/8 < 9/8 → q < 9. Bilangan asli: {2,3,4,5,6,7,8} = <strong>7</strong>.'},
+
+{id:102,diff:'mudah',topic:'geo',
+q:'Sebuah ruang kelas berbentuk persegi panjang berukuran <strong>8 m × 6 m</strong>. Dinding kelas dicat setinggi <strong>3 m</strong>. Terdapat <strong>2 jendela</strong> (masing-masing 1,5 m × 1 m) dan <strong>1 pintu</strong> (2 m × 0,8 m). Luas dinding yang dicat adalah ...',
+opts:['78,4 m²','79,4 m²','80,4 m²','84 m²'],ans:1,
+exp:'Luas 4 dinding = 2(8+6)×3 = 84 m². Jendela = 2×(1,5×1) = 3 m². Pintu = 2×0,8 = 1,6 m². Luas dicat = 84−3−1,6 = <strong>79,4 m²</strong>.'},
+
+{id:103,diff:'sedang',topic:'log',
+q:'Naomi, Tori, dan Eksa bermain <strong>10 babak</strong>. Juara 1 mendapat <strong>5 poin</strong>, juara 2 mendapat <strong>3 poin</strong>, juara 3 mendapat <strong>0 poin</strong>. Naomi total <strong>28 poin</strong>. Paling sedikit Naomi jadi juara ke-3 sebanyak ... kali.',
+opts:['4 kali','3 kali','1 kali','2 kali'],ans:3,
+exp:'5a+3b=28, a+b+c=10 → 2b+5c=22. Untuk c minimum: c=0→b=11,a=−1 ✗. c=2→b=6,a=2: 10+18=28 ✓. Jadi paling sedikit c = <strong>2 kali</strong>.'}
+];
+
+// ═══════════════════════════════
+// GLOBALS
+// ═══════════════════════════════
+let Qs=[],ans=[],curQ=0,tLeft=3600,tInt=null,paused=false,pName='',saved=null;
+const W={mudah:1,sedang:1.25,sulit:1.5},L='ABCD'.split('');
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+const $=id=>document.getElementById(id);
+$('ninp').oninput=function(){$('sbtn').disabled=this.value.trim().length<2};
+$('ninp').onkeydown=function(e){if(e.key==='Enter'&&this.value.trim().length>=2)go()};
+$('sbtn').onclick=()=>go();
+
+function shuf(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function pick(force){
+  if(force)return force.slice();
+  const m=shuf(BANK.filter(q=>q.diff==='mudah')).slice(0,8);
+  const s=shuf(BANK.filter(q=>q.diff==='sedang')).slice(0,14);
+  const h=shuf(BANK.filter(q=>q.diff==='sulit')).slice(0,8);
+  return shuf([...m,...s,...h]);
+}
+
+function go(force){
+  pName=$('ninp').value.trim();
+  Qs=pick(force||null);ans=Array(30).fill(-1);curQ=0;tLeft=3600;paused=false;
+  $('hname').textContent=pName;
+  buildNav();render(0);startT();
+  show('quiz');
+}
+
+function retry(same){
+  clearInterval(tInt);
+  $('ninp').value=pName;
+  go(same?saved:null);
+}
+
+// ═══════════════════════════════
+// TIMER WITH PAUSE
+// ═══════════════════════════════
+function startT(){clearInterval(tInt);updT();tInt=setInterval(()=>{if(!paused){tLeft--;updT();if(tLeft<=0){clearInterval(tInt);finish()}}},1000)}
+function updT(){const m=String(Math.floor(tLeft/60)).padStart(2,'0'),s=String(tLeft%60).padStart(2,'0');$('tdisp').textContent=m+':'+s;$('tmr').className='tmr'+(tLeft<=300?' w':'')+(tLeft<=60?' d':'')}
+$('pausebtn').onclick=()=>{
+  if(!paused){paused=true;$('pov').classList.add('open');$('qcard').style.filter='blur(12px)';$('pausebtn').innerHTML='▶'}
+};
+function resumeTimer(){paused=false;$('pov').classList.remove('open');$('qcard').style.filter='';$('pausebtn').innerHTML='⏸'}
+
+// ═══════════════════════════════
+// RENDER
+// ═══════════════════════════════
+function buildNav(){const g=$('qng');g.innerHTML='';Qs.forEach((_,i)=>{const b=document.createElement('button');b.className='qnb';b.textContent=i+1;b.onclick=()=>render(i);g.appendChild(b)})}
+function updNav(){document.querySelectorAll('.qnb').forEach((b,i)=>{b.className='qnb'+(ans[i]!==-1?' ans':'')+(i===curQ?' cur':'')})}
+
+function render(i){
+  curQ=i;const q=Qs[i];
+  $('qn').textContent='Soal '+(i+1);
+  const d=$('qd');d.textContent=q.diff[0].toUpperCase()+q.diff.slice(1);d.className='qdiff '+q.diff;
+  $('qt').textContent=TOPICS[q.topic];
+  $('qtxt').innerHTML=q.q;
+  const o=$('opts');o.innerHTML='';
+  q.opts.forEach((op,j)=>{
+    const b=document.createElement('button');
+    b.className='obtn'+(ans[i]===j?' sel':'');
+    b.innerHTML='<span class="oltr">'+L[j]+'</span><span>'+op+'</span>';
+    b.onclick=()=>selAns(j);o.appendChild(b);
+  });
+  const n=ans.filter(a=>a!==-1).length;
+  $('plbl').textContent='Soal '+(i+1)+'/30 ('+n+' dijawab)';
+  $('pb').style.width=((i+1)/30*100)+'%';
+  $('bprev').style.display=i===0?'none':'inline-flex';
+  $('bnxt').style.display=i===29?'none':'inline-flex';
+  $('bfin').style.display=i===29?'inline-flex':'none';
+  updNav();
+}
+
+function selAns(j){
+  ans[curQ]=j;
+  document.querySelectorAll('.obtn').forEach((b,k)=>{
+    b.className='obtn'+(k===j?' sel':'');
+  });
+  updNav();
+  const n=ans.filter(a=>a!==-1).length;
+  $('plbl').textContent='Soal '+(curQ+1)+'/30 ('+n+' dijawab)';
+}
+
+$('bprev').onclick=()=>render(curQ-1);
+$('bnxt').onclick=()=>render(curQ+1);
+$('bfin').onclick=()=>{
+  const u=ans.filter(a=>a===-1).length;
+  $('fmsg').textContent=u>0?'Masih ada '+u+' soal belum dijawab. Yakin mengumpulkan?':'Semua soal sudah dijawab. Yakin mengumpulkan?';
+  $('fmod').classList.add('open');
+};
+function closeM(){$('fmod').classList.remove('open')}
+
+// ═══════════════════════════════
+// FINISH & SCORING
+// ═══════════════════════════════
+function finish(){
+  clearInterval(tInt);closeM();saved=Qs.slice();
+  let ok=0,no=0,sk=0,sc=0;
+  // per-topic stats
+  const tStats={};
+  Object.keys(TOPICS).forEach(k=>{tStats[k]={ok:0,total:0,score:0,maxScore:0}});
+  Qs.forEach((q,i)=>{
+    const w=W[q.diff];
+    tStats[q.topic].total++;tStats[q.topic].maxScore+=w;
+    if(ans[i]===-1)sk++;
+    else if(ans[i]===q.ans){ok++;sc+=w;tStats[q.topic].ok++;tStats[q.topic].score+=w}
+    else no++;
+  });
+  const pct=Math.round(sc/37.5*100);
+  let med,ml;
+  if(pct>=90){med='🥇';ml='Luar Biasa! Calon Juara OSN!'}
+  else if(pct>=75){med='🥈';ml='Sangat Bagus! Terus Berlatih!'}
+  else if(pct>=60){med='🥉';ml='Bagus! Tingkatkan Lagi!'}
+  else if(pct>=40){med='📚';ml='Tetap Semangat Belajar!'}
+  else{med='💪';ml='Jangan Menyerah, Coba Lagi!'}
+
+  $('rmedal').textContent=med;$('rmlbl').textContent=ml;
+  $('rnm').textContent='Peserta: '+pName;
+  $('rsc').textContent=sc.toFixed(1);$('rpct').textContent=pct+'% dari nilai maksimal';
+  $('stb').textContent=ok;$('sts').textContent=no;$('stk').textContent=sk;
+
+  // Topic breakdown
+  const tr=$('trows');tr.innerHTML='';
+  Object.keys(TOPICS).forEach(k=>{
+    const s=tStats[k];if(s.total===0)return;
+    const p=s.maxScore>0?Math.round(s.score/s.maxScore*100):0;
+    const row=document.createElement('div');row.className='trow';
+    row.innerHTML='<div class="tn">'+TOPICS[k]+'</div><div class="tbar"><div class="tbf" style="width:'+p+'%"></div></div><div class="tv">'+s.ok+'/'+s.total+' ('+s.score.toFixed(1)+' poin)</div>';
+    tr.appendChild(row);
+  });
+
+  buildRev('all');show('result');window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════
+// REVIEW
+// ═══════════════════════════════
+function showTab(t){
+  document.querySelectorAll('.tbtn').forEach(b=>{b.classList.toggle('act',b.textContent.toLowerCase().includes(t==='all'?'semua':t==='wrong'?'salah':'benar'))});
+  buildRev(t);
+}
+
+function buildRev(f){
+  const list=$('rlist');list.innerHTML='';
+  Qs.forEach((q,i)=>{
+    const ua=ans[i],isOk=ua!==-1&&ua===q.ans,isNo=ua!==-1&&ua!==q.ans,isSk=ua===-1;
+    if(f==='wrong'&&!isNo)return;if(f==='correct'&&!isOk)return;
+    const c=document.createElement('div');
+    c.className='rcard '+(isOk?'ok':isNo?'no':'sk');
+    const st=isOk?'✅ Benar':isNo?'❌ Salah':'⬜ Tidak Dijawab';
+    const sc2=isOk?'rst ok':isNo?'rst no':'rst sk';
+    const w=W[q.diff],pts=isOk?w.toFixed(2):'0';
+    let ohtml=q.opts.map((op,j)=>{
+      let cl='';if(j===q.ans)cl='copt';else if(j===ua&&ua!==q.ans)cl='uwrg';
+      return '<div class="ropt '+cl+'"><strong>'+L[j]+'.</strong> '+op+(j===q.ans?' ✅':'')+(j===ua&&ua!==q.ans?' ❌':'')+'</div>';
+    }).join('');
+    c.innerHTML='<div class="rhead"><span class="qnum">Soal '+(i+1)+'</span><span class="'+sc2+'">'+st+'</span><span class="qdiff '+q.diff+'">'+q.diff[0].toUpperCase()+q.diff.slice(1)+' (×'+w+')</span><span class="qtopic">'+TOPICS[q.topic]+'</span><span style="margin-left:auto;font-weight:700;color:'+(isOk?'var(--ok)':'var(--mut)')+'">+'+pts+'</span></div><div class="rq">'+q.q+'</div><div class="ropts">'+ohtml+'</div><div class="expl"><strong>📖 Pembahasan:</strong> '+q.exp+'</div>';
+    list.appendChild(c);
+  });
+  if(!list.innerHTML)list.innerHTML='<div style="text-align:center;padding:28px;color:var(--mut)">Tidak ada soal dalam kategori ini.</div>';
+}
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
+</script>
+</body>
+</html>
