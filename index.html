@@ -173,10 +173,16 @@
         border-color: var(--pri);
         color: var(--pri);
       }
-      /* Keep tab text readable while pressing (before JS adds .active) */
+      /* Keep tab & chip text readable while pressing (before JS adds .active/.sel) */
       .mtab:not(.active):active,
-      .mtab:not(.active):focus {
+      .mtab:not(.active):focus,
+      .mtab:not(.active):focus-visible,
+      .topic-chip:not(.sel):active,
+      .topic-chip:not(.sel):focus,
+      .topic-chip:not(.sel):focus-visible {
         color: var(--txt);
+        background: var(--card);
+        border-color: var(--pri);
       }
       .topic-grid {
         display: flex;
