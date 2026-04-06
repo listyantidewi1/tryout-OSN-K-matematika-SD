@@ -1185,6 +1185,47 @@
         color: var(--txt);
         margin-top: 8px;
       }
+      /* === USER GUIDE CARD === */
+      .help-card {
+        background: var(--card);
+        border-radius: 12px;
+        padding: 14px 16px;
+        margin-top: 14px;
+        border: 2px solid var(--bdr);
+        text-align: left;
+        box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04);
+      }
+      .help-card h4 {
+        margin: 0 0 8px 0;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--pri);
+      }
+      .help-card p {
+        font-size: 13px;
+        color: var(--mut);
+        margin-bottom: 10px;
+      }
+      .help-list {
+        margin: 0 0 6px 18px;
+        color: var(--txt);
+        line-height: 1.5;
+      }
+      .help-quick {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .help-quick button {
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 2px solid var(--bdr);
+        background: var(--card);
+        cursor: pointer;
+        font-weight: 700;
+        color: var(--pri);
+      }
 
       /* Compact donate thumbnail for landing page */
       .donate-inline {
@@ -1435,6 +1476,59 @@
           />
           <div class="qris-name">TOKO SERBA SERBI, Digital & Kreatif</div>
           <div class="qris-nmid">NMID: ID1026501473833</div>
+        </div>
+        <div class="help-card" id="helpCard" aria-live="polite">
+          <h4>Panduan Singkat</h4>
+          <p>
+            Petunjuk penggunaan cepat untuk memulai dan memaksimalkan fitur
+            aplikasi.
+          </p>
+          <ul class="help-list">
+            <li>
+              <strong>Nama:</strong> Masukkan nama minimal 2 karakter lalu tekan
+              <strong>Mulai Tryout</strong>.
+            </li>
+            <li>
+              <strong>Durasi:</strong> Pilih durasi di dropdown; pilih
+              <em>Tanpa batas waktu</em> bila ingin tanpa timer.
+            </li>
+            <li>
+              <strong>Mode:</strong> <em>Tryout Lengkap</em> (soal acak),
+              <em>Latihan per Topik</em> (pilih topik),
+              <em>Soal Ditandai</em> (latihan dari soal yang dibintangi).
+            </li>
+            <li>
+              <strong>Pembintangan:</strong> Tekan ★ pada kartu soal untuk
+              menandai; soal ditampilkan di mode <em>Soal Ditandai</em>.
+            </li>
+            <li>
+              <strong>Riwayat:</strong> Hasil tersimpan lokal (maks 50 entri).
+              Buka <strong>Riwayat</strong> untuk melihat grafik, detail, dan
+              ulangi tryout.
+            </li>
+            <li>
+              <strong>Selesai:</strong> Setelah mengumpulkan, lihat rincian
+              skor, per-topik, lalu gunakan tombol untuk kembali atau ulangi.
+            </li>
+            <li>
+              <strong>Donasi:</strong> Klik tombol donasi atau scan QRIS untuk
+              berdonasi jika ingin mendukung pengembangan.
+            </li>
+          </ul>
+          <div class="help-quick">
+            <button onclick="document.getElementById('ninp').focus()">
+              Isi Nama
+            </button>
+            <button onclick="showHistory()">Buka Riwayat</button>
+            <button
+              onclick="
+                show('welcome');
+                window.scrollTo(0, 0);
+              "
+            >
+              Kembali ke Beranda
+            </button>
+          </div>
         </div>
       </div>
     </div>
