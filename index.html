@@ -173,6 +173,11 @@
         border-color: var(--pri);
         color: var(--pri);
       }
+      /* Keep tab text readable while pressing (before JS adds .active) */
+      .mtab:not(.active):active,
+      .mtab:not(.active):focus {
+        color: var(--txt);
+      }
       .topic-grid {
         display: flex;
         flex-wrap: wrap;
@@ -199,6 +204,11 @@
       .topic-chip:hover:not(.sel) {
         border-color: var(--pri);
         color: var(--pri);
+      }
+      /* Keep topic-chip text readable while pressing (before JS toggles .sel) */
+      .topic-chip:not(.sel):active,
+      .topic-chip:not(.sel):focus {
+        color: var(--txt);
       }
       .opt-row {
         display: flex;
@@ -1515,7 +1525,9 @@
             </li>
             <li>
               <strong>Kritik & saran:</strong> Kirim melalui email ke
-              <a href="mailto:dewialarasati220@gmail.com">dewialarasati220@gmail.com</a>.
+              <a href="mailto:dewialarasati220@gmail.com"
+                >dewialarasati220@gmail.com</a
+              >.
             </li>
           </ul>
           <div class="help-quick">
