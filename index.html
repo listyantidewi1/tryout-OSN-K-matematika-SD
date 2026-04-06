@@ -488,6 +488,22 @@
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
         transition: filter 0.3s;
       }
+      /* Improve readability of inline SVGs and images inside question cards when in dark mode.
+         - Override stroke and text colors in SVG so lines/labels contrast against dark backgrounds.
+         - Slightly boost raster image brightness/contrast but do not invert or destructively change images.
+      */
+      [data-theme="dark"] .qcard svg [stroke] {
+        stroke: #93c5fd !important;
+      }
+      [data-theme="dark"] .qcard svg text {
+        fill: #eef2ff !important;
+      }
+      [data-theme="dark"] .qcard svg [fill] {
+        fill-opacity: 0.12 !important;
+      }
+      [data-theme="dark"] .qcard img {
+        filter: brightness(1.06) contrast(1.08);
+      }
       .qbadge {
         display: flex;
         align-items: center;
