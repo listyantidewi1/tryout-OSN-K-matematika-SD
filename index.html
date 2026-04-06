@@ -81,7 +81,7 @@
         background: var(--card);
         cursor: pointer;
         font-size: 20px;
-        display: flex;
+        display: none !important;
         align-items: center;
         justify-content: center;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
@@ -4026,17 +4026,13 @@
       // ═══════════════════════════════
       const $ = (id) => document.getElementById(id);
 
-      // Dark mode
+      // Dark mode (disabled) — force light theme for now
       function initDarkMode() {
-        const saved = localStorage.getItem("osn_theme");
-        if (saved) {
-          document.documentElement.setAttribute("data-theme", saved);
-        } else if (
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme:dark)").matches
-        ) {
-          document.documentElement.setAttribute("data-theme", "dark");
-        }
+        // Always use light theme to avoid contrast problems in images.
+        document.documentElement.setAttribute("data-theme", "light");
+        try {
+          localStorage.setItem("osn_theme", "light");
+        } catch (e) {}
         updateDMIcon();
       }
       function toggleDM() {
