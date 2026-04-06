@@ -211,21 +211,16 @@
         border-color: var(--pri);
         color: var(--pri);
       }
-      /* Force readable pressed/focus state in light theme to avoid white-on-white */
-      .mode-tabs .mtab:active,
-      .mode-tabs .mtab:focus,
-      .mode-tabs .mtab:focus-visible,
-      .topic-grid .topic-chip:active,
-      .topic-grid .topic-chip:focus,
-      .topic-grid .topic-chip:focus-visible {
-        color: var(--txt) !important;
-        background: var(--card) !important;
-        border-color: var(--pri) !important;
-      }
-      /* Keep topic-chip text readable while pressing (before JS toggles .sel) */
-      .topic-chip:not(.sel):active,
-      .topic-chip:not(.sel):focus {
+      /* Force readable pressed/focus state for UNSELECTED tabs/chips only */
+      .mode-tabs .mtab:not(.active):active,
+      .mode-tabs .mtab:not(.active):focus,
+      .mode-tabs .mtab:not(.active):focus-visible,
+      .topic-grid .topic-chip:not(.sel):active,
+      .topic-grid .topic-chip:not(.sel):focus,
+      .topic-grid .topic-chip:not(.sel):focus-visible {
         color: var(--txt);
+        background: var(--card);
+        border-color: var(--pri);
       }
       .opt-row {
         display: flex;
