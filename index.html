@@ -174,17 +174,6 @@
         border-color: var(--pri);
         color: var(--pri);
       }
-      /* Keep tab & chip text readable while pressing (before JS adds .active/.sel) */
-      .mtab:not(.active):active,
-      .mtab:not(.active):focus,
-      .mtab:not(.active):focus-visible,
-      .topic-chip:not(.sel):active,
-      .topic-chip:not(.sel):focus,
-      .topic-chip:not(.sel):focus-visible {
-        color: var(--txt);
-        background: var(--card);
-        border-color: var(--pri);
-      }
       .topic-grid {
         display: flex;
         flex-wrap: wrap;
@@ -498,8 +487,10 @@
       [data-theme="dark"] .qcard svg text {
         fill: #eef2ff !important;
       }
-      [data-theme="dark"] .qcard svg [fill] {
-        fill-opacity: 0.12 !important;
+      [data-theme="dark"] .qcard svg rect[fill],
+      [data-theme="dark"] .qcard svg circle[fill],
+      [data-theme="dark"] .qcard svg path[fill] {
+        fill-opacity: 0.25 !important;
       }
       [data-theme="dark"] .qcard img {
         filter: brightness(1.06) contrast(1.08);
@@ -1248,6 +1239,7 @@
         margin: 0 0 6px 18px;
         color: var(--txt);
         line-height: 1.5;
+        font-size: 13px;
       }
       .help-quick {
         display: flex;
@@ -1516,62 +1508,13 @@
           <div class="qris-nmid">NMID: ID1026501473833</div>
         </div>
         <div class="help-card" id="helpCard" aria-live="polite">
-          <h4>Panduan Singkat</h4>
-          <p>
-            Petunjuk penggunaan cepat untuk memulai dan memaksimalkan fitur
-            aplikasi.
-          </p>
-          <ul class="help-list">
-            <li>
-              <strong>Nama:</strong> Masukkan nama minimal 2 karakter lalu tekan
-              <strong>Mulai Tryout</strong>.
-            </li>
-            <li>
-              <strong>Durasi:</strong> Pilih durasi di dropdown; pilih
-              <em>Tanpa batas waktu</em> bila ingin tanpa timer.
-            </li>
-            <li>
-              <strong>Mode:</strong> <em>Tryout Lengkap</em> (soal acak),
-              <em>Latihan per Topik</em> (pilih topik),
-              <em>Soal Ditandai</em> (latihan dari soal yang dibintangi).
-            </li>
-            <li>
-              <strong>Pembintangan:</strong> Tekan ★ pada kartu soal untuk
-              menandai; soal ditampilkan di mode <em>Soal Ditandai</em>.
-            </li>
-            <li>
-              <strong>Riwayat:</strong> Hasil tersimpan lokal (maks 50 entri).
-              Buka <strong>Riwayat</strong> untuk melihat grafik, detail, dan
-              ulangi tryout.
-            </li>
-            <li>
-              <strong>Selesai:</strong> Setelah mengumpulkan, lihat rincian
-              skor, per-topik, lalu gunakan tombol untuk kembali atau ulangi.
-            </li>
-            <li>
-              <strong>Donasi:</strong> Klik tombol donasi atau scan QRIS untuk
-              berdonasi jika ingin mendukung pengembangan.
-            </li>
-            <li>
-              <strong>Kritik & saran:</strong> Kirim melalui email ke
-              <a href="mailto:dewialarasati220@gmail.com"
-                >dewialarasati220@gmail.com</a
-              >.
-            </li>
-          </ul>
+          <h4 data-i18n="guide_title">Panduan Singkat</h4>
+          <p data-i18n="guide_intro">Petunjuk penggunaan cepat untuk memulai dan memaksimalkan fitur aplikasi.</p>
+          <ul class="help-list" id="helpList"></ul>
           <div class="help-quick">
-            <button onclick="document.getElementById('ninp').focus()">
-              Isi Nama
-            </button>
-            <button onclick="showHistory()">Buka Riwayat</button>
-            <button
-              onclick="
-                show('welcome');
-                window.scrollTo(0, 0);
-              "
-            >
-              Kembali ke Beranda
-            </button>
+            <button onclick="document.getElementById('ninp').focus()" data-i18n="guide_btn_name">Isi Nama</button>
+            <button onclick="showHistory()" data-i18n="guide_btn_history">Buka Riwayat</button>
+            <button onclick="show('welcome');window.scrollTo(0,0)" data-i18n="guide_btn_top">Kembali ke Atas</button>
           </div>
         </div>
       </div>
@@ -1664,16 +1607,7 @@
       </div>
       <div class="rlist" id="rlist"></div>
       <div class="racts">
-        <button
-          class="bret"
-          onclick="
-            show('welcome');
-            window.scrollTo(0, 0);
-          "
-          title="Kembali ke Beranda"
-        >
-          🏠 Kembali ke Beranda
-        </button>
+        <button class="bret" onclick="show('welcome');window.scrollTo(0,0)" data-i18n="btn_home_full">🏠 Kembali ke Beranda</button>
         <button class="bret" onclick="retry()" data-i18n="btn_retry">
           🔄 Coba Lagi (Soal Baru)
         </button>
@@ -1687,7 +1621,7 @@
         </button>
       </div>
       <div class="donate-card" id="donateCard">
-        <h3>☕ Terbantu dengan aplikasi ini?</h3>
+        <h3 data-i18n="donate_card_title">☕ Terbantu dengan aplikasi ini?</h3>
         <p data-i18n="donate_desc">
           Dukung pengembangan dengan donasi sukarela via QRIS. Minimal Rp5.000 —
           setiap kontribusi sangat berarti!
@@ -1738,37 +1672,22 @@
     <!-- ===== MODALS ===== -->
     <div class="mov" id="fmod">
       <div class="mdl">
-        <h3>⚠️ Selesaikan Tryout?</h3>
+        <h3 data-i18n="modal_finish_title">⚠️ Selesaikan Tryout?</h3>
         <p id="fmsg"></p>
         <div class="mbtns">
-          <button class="mbc" onclick="gotoHome()">🏠 Beranda</button>
-          <button class="mbc" onclick="closeM()">Kembali</button>
-          <button class="mbk" onclick="finish()">Ya, Kumpulkan</button>
+          <button class="mbc" onclick="gotoHome()" data-i18n="btn_home">🏠 Beranda</button>
+          <button class="mbc" onclick="closeM()" data-i18n="btn_cancel">Kembali</button>
+          <button class="mbk" onclick="finish()" data-i18n="btn_submit">Ya, Kumpulkan</button>
         </div>
       </div>
     </div>
     <div class="pause-ov" id="pov">
       <div class="pause-box">
-        <h3>⏸ Tryout Dijeda</h3>
-        <p>Timer dihentikan sementara. Soal disembunyikan selama jeda.</p>
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-          "
-        >
-          <button
-            class="btn btn1"
-            onclick="resumeTimer()"
-            style="max-width: 220px"
-          >
-            ▶ Lanjutkan
-          </button>
-          <button class="btn3" onclick="gotoHome()" style="max-width: 220px">
-            🏠 Beranda
-          </button>
+        <h3 data-i18n="modal_pause_title">⏸ Tryout Dijeda</h3>
+        <p data-i18n="modal_pause_desc">Timer dihentikan sementara. Soal disembunyikan selama jeda.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;align-items:center">
+          <button class="btn btn1" onclick="resumeTimer()" style="max-width:220px" data-i18n="btn_resume">▶ Lanjutkan</button>
+          <button class="btn btn3" onclick="gotoHome()" style="max-width:220px" data-i18n="btn_home">🏠 Beranda</button>
         </div>
       </div>
     </div>
@@ -1776,22 +1695,15 @@
     <!-- DONATE MODAL -->
     <div class="donate-modal" id="donateModal">
       <div class="donate-modal-box">
-        <h3>☕ Dukung Kami</h3>
-        <p data-i18n="donate_modal_desc">
-          Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br />Dukung
-          pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).
-        </p>
-        <img
-          src="qris.png"
-          alt="QRIS Donasi"
-          onerror="this.style.display = 'none'"
-        />
+        <h3 data-i18n="donate_modal_title">☕ Dukung Kami</h3>
+        <p data-i18n="donate_modal_desc">Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br />Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).</p>
+        <img src="qris.png" alt="QRIS Donasi" onerror="this.style.display='none'" />
         <div class="qris-name">TOKO SERBA SERBI, DIGITAL & KREATIF</div>
         <div class="qris-nmid">NMID: ID1026501473833</div>
         <br />
-        <div style="display: flex; gap: 8px; justify-content: center">
-          <button class="close-dm" onclick="closeDonate()">Tutup</button>
-          <button class="mbc" onclick="gotoHome()">🏠 Beranda</button>
+        <div style="display:flex;gap:8px;justify-content:center">
+          <button class="close-dm" onclick="closeDonate()" data-i18n="btn_close">Tutup</button>
+          <button class="mbc" onclick="gotoHome()" data-i18n="btn_home">🏠 Beranda</button>
         </div>
       </div>
     </div>
@@ -3936,11 +3848,25 @@
           confirm_unfinished:
             "Masih ada {n} soal belum dijawab. Yakin mengumpulkan?",
           donate_link: "☕ Dukung pengembangan aplikasi ini",
-          donate_desc:
-            "Dukung pengembangan dengan donasi sukarela via QRIS. Minimal Rp5.000 — setiap kontribusi sangat berarti!",
-          donate_modal_desc:
-            "Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br>Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).",
+          donate_desc: "Dukung pengembangan dengan donasi sukarela via QRIS. Minimal Rp5.000 — setiap kontribusi sangat berarti!",
+          donate_modal_title: "☕ Dukung Kami",
+          donate_modal_desc: "Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br>Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).",
+          donate_card_title: "☕ Terbantu dengan aplikasi ini?",
           donate_note: "Scan dengan aplikasi e-wallet atau mobile banking",
+          modal_finish_title: "⚠️ Selesaikan Tryout?",
+          modal_pause_title: "⏸ Tryout Dijeda",
+          modal_pause_desc: "Timer dihentikan sementara. Soal disembunyikan selama jeda.",
+          btn_home: "🏠 Beranda",
+          btn_home_full: "🏠 Kembali ke Beranda",
+          btn_cancel: "Kembali",
+          btn_submit: "Ya, Kumpulkan",
+          btn_resume: "▶ Lanjutkan",
+          btn_close: "Tutup",
+          guide_title: "Panduan Singkat",
+          guide_intro: "Petunjuk penggunaan cepat untuk memulai dan memaksimalkan fitur aplikasi.",
+          guide_btn_name: "Isi Nama",
+          guide_btn_history: "Buka Riwayat",
+          guide_btn_top: "Kembali ke Atas",
         },
         en: {
           title: "OSN Mathematics Tryout (SD)",
@@ -3977,14 +3903,57 @@
           confirm_finish: "All questions answered. Submit?",
           confirm_unfinished: "{n} questions unanswered. Submit anyway?",
           donate_link: "☕ Support this app",
-          donate_desc:
-            "Support development with a voluntary donation via QRIS.<br>Minimum Rp5,000 — every contribution matters!",
-          donate_modal_desc:
-            "This app is free to help OSN preparation.<br>Support development with a voluntary QRIS donation (min. Rp5,000).",
+          donate_desc: "Support development with a voluntary donation via QRIS.<br>Minimum Rp5,000 — every contribution matters!",
+          donate_modal_title: "☕ Support Us",
+          donate_modal_desc: "This app is free to help OSN preparation.<br>Support development with a voluntary QRIS donation (min. Rp5,000).",
+          donate_card_title: "☕ Found this app helpful?",
           donate_note: "Scan with any e-wallet or mobile banking app",
+          modal_finish_title: "⚠️ Finish Tryout?",
+          modal_pause_title: "⏸ Tryout Paused",
+          modal_pause_desc: "Timer paused. Questions are hidden while paused.",
+          btn_home: "🏠 Home",
+          btn_home_full: "🏠 Back to Home",
+          btn_cancel: "Cancel",
+          btn_submit: "Yes, Submit",
+          btn_resume: "▶ Resume",
+          btn_close: "Close",
+          guide_title: "Quick Guide",
+          guide_intro: "Quick instructions to get started and make the most of the app.",
+          guide_btn_name: "Enter Name",
+          guide_btn_history: "View History",
+          guide_btn_top: "Back to Top",
         },
       };
       let LANG = localStorage.getItem("osn_lang") || "id";
+
+      const GUIDE = {
+        id: [
+          '<strong>Nama:</strong> Masukkan nama minimal 2 karakter lalu tekan <strong>Mulai Tryout</strong>.',
+          '<strong>Durasi:</strong> Pilih durasi di dropdown; pilih <em>Tanpa batas waktu</em> bila ingin tanpa timer.',
+          '<strong>Mode:</strong> <em>Tryout Lengkap</em> (soal acak), <em>Latihan per Topik</em> (pilih topik), <em>Soal Ditandai</em> (latihan dari soal yang dibintangi).',
+          '<strong>Pembintangan:</strong> Tekan ★ pada kartu soal untuk menandai; soal ditampilkan di mode <em>Soal Ditandai</em>.',
+          '<strong>Riwayat:</strong> Hasil tersimpan lokal (maks 50 entri). Buka <strong>Riwayat</strong> untuk melihat grafik, detail, dan ulangi tryout.',
+          '<strong>Selesai:</strong> Setelah mengumpulkan, lihat rincian skor per topik, lalu gunakan tombol untuk kembali atau ulangi.',
+          '<strong>Donasi:</strong> Klik tombol donasi atau scan QRIS untuk berdonasi jika ingin mendukung pengembangan.',
+          '<strong>Kritik & saran:</strong> Kirim melalui email ke <a href="mailto:dewialarasati220@gmail.com">dewialarasati220@gmail.com</a>.',
+        ],
+        en: [
+          '<strong>Name:</strong> Enter at least 2 characters then press <strong>Start Tryout</strong>.',
+          '<strong>Duration:</strong> Choose from the dropdown; select <em>No time limit</em> for untimed practice.',
+          '<strong>Mode:</strong> <em>Full Tryout</em> (random questions), <em>Practice by Topic</em> (pick a topic), <em>Bookmarked</em> (practice starred questions).',
+          '<strong>Bookmarks:</strong> Tap ★ on any question card to bookmark it; bookmarked questions appear in <em>Bookmarked</em> mode.',
+          '<strong>History:</strong> Results are saved locally (max 50 entries). Open <strong>History</strong> to view charts, details, and retake tryouts.',
+          '<strong>Results:</strong> After submitting, view score breakdown by topic, then use buttons to go back or retry.',
+          '<strong>Donate:</strong> Tap the donate button or scan the QRIS code to support development.',
+          '<strong>Feedback:</strong> Send via email to <a href="mailto:dewialarasati220@gmail.com">dewialarasati220@gmail.com</a>.',
+        ]
+      };
+
+      function renderGuide(l) {
+        const ul = $("helpList");
+        if (!ul) return;
+        ul.innerHTML = GUIDE[l].map(item => '<li>' + item + '</li>').join('');
+      }
 
       function setLang(l) {
         LANG = l;
@@ -3992,12 +3961,13 @@
         $("langtoggle").textContent = l.toUpperCase();
         document.querySelectorAll("[data-i18n]").forEach((el) => {
           const key = el.getAttribute("data-i18n");
-          if (I18N[l][key]) el.textContent = I18N[l][key];
+          if (I18N[l][key]) el.innerHTML = I18N[l][key];
         });
         document.querySelectorAll("[data-i18n-ph]").forEach((el) => {
           const key = el.getAttribute("data-i18n-ph");
           if (I18N[l][key]) el.placeholder = I18N[l][key];
         });
+        renderGuide(l);
       }
 
       // ═══════════════════════════════
@@ -4777,40 +4747,6 @@
       }
 
       // ═══════════════════════════════
-      // INTERACTIVE SVG EXPLANATIONS
-      // ═══════════════════════════════
-      // After review cards are built, add step-reveal to geometry explanations
-      function initInteractiveSVG() {
-        document.querySelectorAll(".expl").forEach((el) => {
-          const strongEls = el.querySelectorAll("strong");
-          let hasSteps = false;
-          strongEls.forEach((s) => {
-            if (s.textContent.match(/Langkah \d/)) hasSteps = true;
-          });
-          if (!hasSteps) return;
-
-          // Wrap each step section in a collapsible div
-          let html = el.innerHTML;
-          // Already rendered, add toggle behavior
-          const parts = html.split(/<strong>Langkah/g);
-          if (parts.length <= 1) return;
-
-          let newHtml = parts[0]; // Diketahui section
-          for (let i = 1; i < parts.length; i++) {
-            const stepContent = "<strong>Langkah" + parts[i];
-            newHtml +=
-              '<div class="step-reveal" style="cursor:pointer" onclick="this.classList.toggle(\'open\')">' +
-              stepContent +
-              "</div>";
-          }
-          // Don't modify if already processed
-          if (!el.classList.contains("interactive")) {
-            el.classList.add("interactive");
-          }
-        });
-      }
-
-      // ═══════════════════════════════
       // SCREEN MANAGEMENT
       // ═══════════════════════════════
       function show(id) {
@@ -4821,24 +4757,18 @@
       }
 
       // Navigate safely back to the welcome screen from any modal/overlay
-      function gotoHome() {
+      function gotoHome(skipConfirm) {
+        // If quiz is active and not confirmed, ask first
+        if (!skipConfirm && Qs.length > 0 && $("quiz").classList.contains("active")) {
+          if (!confirm(LANG === "en" ? "Quit the tryout? All progress will be lost." : "Keluar dari tryout? Semua progres akan hilang.")) return;
+        }
         clearInterval(tInt);
         paused = false;
-        try {
-          $("pov").classList.remove("open");
-        } catch (e) {}
-        try {
-          $("fmod").classList.remove("open");
-        } catch (e) {}
-        try {
-          $("donateModal").classList.remove("open");
-        } catch (e) {}
-        try {
-          $("qcard").style.filter = "";
-        } catch (e) {}
-        try {
-          if ($("pausebtn")) $("pausebtn").innerHTML = "⏸";
-        } catch (e) {}
+        $("pov").classList.remove("open");
+        $("fmod").classList.remove("open");
+        $("donateModal").classList.remove("open");
+        $("qcard").style.filter = "";
+        $("pausebtn").innerHTML = "⏸";
         show("welcome");
         window.scrollTo(0, 0);
       }
