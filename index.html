@@ -156,6 +156,24 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 .mbc{flex:1;padding:11px;border-radius:10px;border:2px solid var(--bdr);background:var(--card);cursor:pointer;font-size:14px;font-weight:600;color:var(--txt)}
 .mbk{flex:1;padding:11px;border-radius:10px;border:none;background:var(--ok);color:#fff;cursor:pointer;font-size:14px;font-weight:600}
 
+/* === DONATION === */
+.donate-link{display:inline-flex;align-items:center;gap:4px;font-size:12px;color:var(--pri);cursor:pointer;margin-top:8px;text-decoration:none;font-weight:600;transition:.2s}
+.donate-link:hover{text-decoration:underline}
+.donate-card{background:var(--card);border-radius:14px;padding:24px 20px;margin-top:20px;box-shadow:0 2px 8px rgba(0,0,0,.07);text-align:center;border:2px solid var(--bdr)}
+.donate-card h3{font-size:16px;font-weight:700;margin-bottom:6px}
+.donate-card p{font-size:13px;color:var(--mut);line-height:1.6;margin-bottom:14px}
+.donate-card img{width:220px;max-width:100%;border-radius:10px;margin-bottom:10px}
+.donate-card .qris-name{font-size:12px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.donate-card .qris-nmid{font-size:10px;color:var(--mut);margin-bottom:10px}
+.donate-card .qris-note{font-size:11px;color:var(--mut);font-style:italic}
+.donate-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:250}
+.donate-modal.open{display:flex}
+.donate-modal-box{background:var(--card);border-radius:20px;padding:28px 24px;max-width:340px;width:92%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.donate-modal-box h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.donate-modal-box p{font-size:13px;color:var(--mut);line-height:1.6;margin-bottom:14px}
+.donate-modal-box img{width:240px;max-width:100%;border-radius:10px;margin-bottom:10px}
+.donate-modal-box .close-dm{padding:10px 24px;border-radius:10px;border:2px solid var(--bdr);background:var(--card);cursor:pointer;font-size:14px;font-weight:600;color:var(--txt);margin-top:8px}
+
 /* === LANG TOGGLE === */
 .lang-toggle{position:fixed;bottom:20px;right:70px;z-index:300;padding:6px 12px;border-radius:20px;border:2px solid var(--bdr);background:var(--card);cursor:pointer;font-size:12px;font-weight:700;color:var(--pri);box-shadow:0 2px 12px rgba(0,0,0,.15);transition:.2s}
 .lang-toggle:hover{border-color:var(--pri)}
@@ -229,6 +247,7 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <button id="hbtn" class="btn btn3" onclick="showHistory()" data-i18n="btn_history">📊 Riwayat</button>
   </div>
   <div class="snote"><strong data-i18n="score_rule">Aturan Skor OSN-K:</strong> <span data-i18n="score_detail">Mudah ×1,00 · Sedang ×1,25 · Sulit ×1,50 · Salah/Kosong = 0</span></div>
+  <a class="donate-link" onclick="openDonate()" data-i18n="donate_link">☕ Dukung pengembangan aplikasi ini</a>
 </div>
 </div>
 
@@ -288,6 +307,14 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
     <button class="bret" onclick="retry()" data-i18n="btn_retry">🔄 Coba Lagi (Soal Baru)</button>
     <button class="bret" style="background:#6b7280" onclick="retry(true)" data-i18n="btn_repeat">🔄 Ulangi Soal Ini</button>
   </div>
+  <div class="donate-card" id="donateCard">
+    <h3>☕ Terbantu dengan aplikasi ini?</h3>
+    <p data-i18n="donate_desc">Dukung pengembangan dengan donasi sukarela via QRIS.<br>Minimal Rp5.000 — setiap kontribusi sangat berarti!</p>
+    <img src="qris.png" alt="QRIS Donasi" onerror="this.parentElement.style.display='none'">
+    <div class="qris-name">TOKO SERBA SERBI, DIGITAL & KREATIF</div>
+    <div class="qris-nmid">NMID: ID1026501473833</div>
+    <div class="qris-note" data-i18n="donate_note">Scan dengan aplikasi e-wallet atau mobile banking</div>
+  </div>
 </div>
 
 <!-- ===== HISTORY ===== -->
@@ -306,6 +333,19 @@ body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(
 <!-- ===== MODALS ===== -->
 <div class="mov" id="fmod"><div class="mdl"><h3>⚠️ Selesaikan Tryout?</h3><p id="fmsg"></p><div class="mbtns"><button class="mbc" onclick="closeM()">Kembali</button><button class="mbk" onclick="finish()">Ya, Kumpulkan</button></div></div></div>
 <div class="pause-ov" id="pov"><div class="pause-box"><h3>⏸ Tryout Dijeda</h3><p>Timer dihentikan sementara. Soal disembunyikan selama jeda.</p><button class="btn btn1" onclick="resumeTimer()" style="max-width:220px;margin:0 auto">▶ Lanjutkan</button></div></div>
+
+<!-- DONATE MODAL -->
+<div class="donate-modal" id="donateModal">
+  <div class="donate-modal-box">
+    <h3>☕ Dukung Kami</h3>
+    <p data-i18n="donate_modal_desc">Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br>Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).</p>
+    <img src="qris.png" alt="QRIS Donasi" onerror="this.style.display='none'">
+    <div class="qris-name">TOKO SERBA SERBI, DIGITAL & KREATIF</div>
+    <div class="qris-nmid">NMID: ID1026501473833</div>
+    <br>
+    <button class="close-dm" onclick="closeDonate()">Tutup</button>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════════
@@ -1375,7 +1415,11 @@ const I18N = {
     tab_all:'Semua', tab_wrong:'Salah', tab_right:'Benar',
     no_bookmark:'Belum ada soal yang ditandai. Tandai soal dengan ikon ☆ saat mengerjakan tryout.',
     confirm_finish:'Semua soal sudah dijawab. Yakin mengumpulkan?',
-    confirm_unfinished:'Masih ada {n} soal belum dijawab. Yakin mengumpulkan?'
+    confirm_unfinished:'Masih ada {n} soal belum dijawab. Yakin mengumpulkan?',
+    donate_link:'☕ Dukung pengembangan aplikasi ini',
+    donate_desc:'Dukung pengembangan dengan donasi sukarela via QRIS.<br>Minimal Rp5.000 — setiap kontribusi sangat berarti!',
+    donate_modal_desc:'Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br>Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).',
+    donate_note:'Scan dengan aplikasi e-wallet atau mobile banking'
   },
   en: {
     title:'OSN Mathematics Tryout (SD)', subtitle:'National Science Olympiad · District Level · 2026',
@@ -1390,7 +1434,11 @@ const I18N = {
     tab_all:'All', tab_wrong:'Wrong', tab_right:'Correct',
     no_bookmark:'No bookmarked questions yet. Bookmark questions with the ☆ icon during tryout.',
     confirm_finish:'All questions answered. Submit?',
-    confirm_unfinished:'{n} questions unanswered. Submit anyway?'
+    confirm_unfinished:'{n} questions unanswered. Submit anyway?',
+    donate_link:'☕ Support this app',
+    donate_desc:'Support development with a voluntary donation via QRIS.<br>Minimum Rp5,000 — every contribution matters!',
+    donate_modal_desc:'This app is free to help OSN preparation.<br>Support development with a voluntary QRIS donation (min. Rp5,000).',
+    donate_note:'Scan with any e-wallet or mobile banking app'
   }
 };
 let LANG = localStorage.getItem('osn_lang') || 'id';
@@ -1891,6 +1939,12 @@ function initInteractiveSVG(){
 // SCREEN MANAGEMENT
 // ═══════════════════════════════
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
+
+// ═══════════════════════════════
+// DONATE
+// ═══════════════════════════════
+function openDonate(){$('donateModal').classList.add('open')}
+function closeDonate(){$('donateModal').classList.remove('open')}
 
 // ═══════════════════════════════
 // PWA SERVICE WORKER
