@@ -1526,6 +1526,16 @@
       </div>
       <div class="rlist" id="rlist"></div>
       <div class="racts">
+        <button
+          class="bret"
+          onclick="
+            show('welcome');
+            window.scrollTo(0, 0);
+          "
+          title="Kembali ke Beranda"
+        >
+          🏠 Kembali ke Beranda
+        </button>
         <button class="bret" onclick="retry()" data-i18n="btn_retry">
           🔄 Coba Lagi (Soal Baru)
         </button>
@@ -1541,8 +1551,8 @@
       <div class="donate-card" id="donateCard">
         <h3>☕ Terbantu dengan aplikasi ini?</h3>
         <p data-i18n="donate_desc">
-          Dukung pengembangan dengan donasi sukarela via QRIS. Minimal
-          Rp5.000 — setiap kontribusi sangat berarti!
+          Dukung pengembangan dengan donasi sukarela via QRIS. Minimal Rp5.000 —
+          setiap kontribusi sangat berarti!
         </p>
         <img
           src="qris.png"
@@ -1593,8 +1603,9 @@
         <h3>⚠️ Selesaikan Tryout?</h3>
         <p id="fmsg"></p>
         <div class="mbtns">
-          <button class="mbc" onclick="closeM()">Kembali</button
-          ><button class="mbk" onclick="finish()">Ya, Kumpulkan</button>
+          <button class="mbc" onclick="gotoHome()">🏠 Beranda</button>
+          <button class="mbc" onclick="closeM()">Kembali</button>
+          <button class="mbk" onclick="finish()">Ya, Kumpulkan</button>
         </div>
       </div>
     </div>
@@ -1602,13 +1613,25 @@
       <div class="pause-box">
         <h3>⏸ Tryout Dijeda</h3>
         <p>Timer dihentikan sementara. Soal disembunyikan selama jeda.</p>
-        <button
-          class="btn btn1"
-          onclick="resumeTimer()"
-          style="max-width: 220px; margin: 0 auto"
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+          "
         >
-          ▶ Lanjutkan
-        </button>
+          <button
+            class="btn btn1"
+            onclick="resumeTimer()"
+            style="max-width: 220px"
+          >
+            ▶ Lanjutkan
+          </button>
+          <button class="btn3" onclick="gotoHome()" style="max-width: 220px">
+            🏠 Beranda
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1628,7 +1651,10 @@
         <div class="qris-name">TOKO SERBA SERBI, DIGITAL & KREATIF</div>
         <div class="qris-nmid">NMID: ID1026501473833</div>
         <br />
-        <button class="close-dm" onclick="closeDonate()">Tutup</button>
+        <div style="display: flex; gap: 8px; justify-content: center">
+          <button class="close-dm" onclick="closeDonate()">Tutup</button>
+          <button class="mbc" onclick="gotoHome()">🏠 Beranda</button>
+        </div>
       </div>
     </div>
 
@@ -3773,7 +3799,7 @@
             "Masih ada {n} soal belum dijawab. Yakin mengumpulkan?",
           donate_link: "☕ Dukung pengembangan aplikasi ini",
           donate_desc:
-            "Dukung pengembangan dengan donasi sukarela via QRIS.<br>Minimal Rp5.000 — setiap kontribusi sangat berarti!",
+            "Dukung pengembangan dengan donasi sukarela via QRIS. Minimal Rp5.000 — setiap kontribusi sangat berarti!",
           donate_modal_desc:
             "Aplikasi ini dibuat gratis untuk membantu persiapan OSN.<br>Dukung pengembangan dengan donasi sukarela via QRIS (min. Rp5.000).",
           donate_note: "Scan dengan aplikasi e-wallet atau mobile banking",
@@ -4658,6 +4684,29 @@
           .querySelectorAll(".screen")
           .forEach((s) => s.classList.remove("active"));
         $(id).classList.add("active");
+      }
+
+      // Navigate safely back to the welcome screen from any modal/overlay
+      function gotoHome() {
+        clearInterval(tInt);
+        paused = false;
+        try {
+          $("pov").classList.remove("open");
+        } catch (e) {}
+        try {
+          $("fmod").classList.remove("open");
+        } catch (e) {}
+        try {
+          $("donateModal").classList.remove("open");
+        } catch (e) {}
+        try {
+          $("qcard").style.filter = "";
+        } catch (e) {}
+        try {
+          if ($("pausebtn")) $("pausebtn").innerHTML = "⏸";
+        } catch (e) {}
+        show("welcome");
+        window.scrollTo(0, 0);
       }
 
       // ═══════════════════════════════
