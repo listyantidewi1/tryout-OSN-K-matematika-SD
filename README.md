@@ -4,16 +4,22 @@ Aplikasi web tryout **Olimpiade Sains Nasional (OSN)** bidang **Matematika** tin
 
 ## Fitur
 
-- **103 soal** pilihan ganda mencakup 7 topik OSN Matematika SD
+- **200 soal** pilihan ganda mencakup 7 topik OSN Matematika SD
 - **30 soal per sesi** dipilih secara acak (8 mudah + 14 sedang + 8 sulit)
 - **Soal berbeda setiap percobaan** berkat randomisasi dari bank soal
-- **Timer 60 menit** dengan fitur pause/jeda
+- **3 mode latihan**: Tryout Lengkap, Latihan per Topik, Soal Ditandai
+- **Timer fleksibel**: 60 / 90 / 120 menit, atau tanpa batas waktu
 - **Navigasi soal** — bisa lompat ke soal mana saja
+- **Tandai soal** — bookmark soal untuk diulang nanti
 - **Ilustrasi SVG** pada soal-soal geometri
 - **Sistem skor OSN-K**: Mudah ×1,00 · Sedang ×1,25 · Sulit ×1,50
 - **Rincian skor per topik** setelah selesai
-- **Pembahasan lengkap** untuk setiap soal
-- **Ulangi soal yang sama** atau coba soal baru
+- **Pembahasan lengkap** bertahap (scaffolded) untuk setiap soal
+- **Riwayat & grafik perkembangan** tersimpan di browser
+- **Bagikan hasil** via WhatsApp, salin, atau cetak/PDF
+- **Mode gelap** (dark mode)
+- **Dwibahasa** Indonesia / English
+- **PWA** — bisa di-install di HP dan digunakan offline
 - **Single file HTML** — tidak perlu server atau instalasi
 
 ## Topik Soal
@@ -31,12 +37,14 @@ Aplikasi web tryout **Olimpiade Sains Nasional (OSN)** bidang **Matematika** tin
 ## Cara Pakai
 
 1. Buka `index.html` di browser (Chrome/Firefox/Edge)
-2. Masukkan nama peserta
-3. Klik **Mulai Tryout**
-4. Jawab 30 soal dalam 60 menit
-5. Lihat hasil, skor per topik, dan pembahasan
+2. Pilih mode latihan dan durasi timer
+3. Masukkan nama peserta
+4. Klik **Mulai Tryout**
+5. Jawab soal, tandai yang ingin diulang
+6. Lihat hasil, skor per topik, dan pembahasan
+7. Cek riwayat perkembangan di halaman utama
 
-Atau akses langsung via GitHub Pages (jika diaktifkan).
+Atau akses langsung via Netlify.
 
 ## Aturan Skor
 
@@ -57,7 +65,7 @@ Soal-soal disusun berdasarkan:
 
 ## Teknologi
 
-Single file HTML dengan CSS dan JavaScript inline. Tidak memerlukan framework, build tool, atau dependensi eksternal.
+Single file HTML dengan CSS dan JavaScript inline. PWA-ready dengan service worker untuk penggunaan offline. Tidak memerlukan framework, build tool, atau dependensi eksternal.
 
 ## Lisensi
 
